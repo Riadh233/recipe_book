@@ -12,9 +12,7 @@ class _RecipeApiService implements RecipeApiService {
   _RecipeApiService(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://api.edamam.com';
-  }
+  });
 
   final Dio _dio;
 
@@ -24,8 +22,7 @@ class _RecipeApiService implements RecipeApiService {
   Future<HttpResponse<RecipeQueryModel>> getRecipes({
     required String appKey,
     required String appId,
-    required int from,
-    required int to,
+    String type = 'public',
     String? query,
     String health_label = 'alcohol-free',
     String health_label2 = 'pork-free',
@@ -35,8 +32,7 @@ class _RecipeApiService implements RecipeApiService {
     final queryParameters = <String, dynamic>{
       r'app_key': appKey,
       r'app_id': appId,
-      r'from': from,
-      r'to': to,
+      r'type': type,
       r'q': query,
       r'health': health_label,
       r'health': health_label2,
@@ -53,7 +49,37 @@ class _RecipeApiService implements RecipeApiService {
     )
             .compose(
               _dio.options,
-              '/search',
+              'https://api.edamam.com/api/recipes/v2',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = RecipeQueryModel.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<RecipeQueryModel>> getNextPageRecipes(
+      {String? nextPageUrl}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<RecipeQueryModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${nextPageUrl}',
               queryParameters: queryParameters,
               data: _data,
             )

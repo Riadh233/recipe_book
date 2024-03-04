@@ -37,7 +37,7 @@ class _RecipeListState extends State<RecipesList> {
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    if (currentScroll >= (maxScroll * 0.9)) {
+    if (currentScroll >= (maxScroll)) {
       context.read<RemoteRecipeBloc>().add(const GetRecipesEvent(
           query: DEFAULT_QUERY,
           diet: DEFAULT_DIET,

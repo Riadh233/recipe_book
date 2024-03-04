@@ -8,14 +8,14 @@ enum RecipeStatus { initial, success, failure }
 class RemoteRecipeState extends Equatable {
   final List<Recipe> recipeList;
   final RecipeStatus status;
-  final String nextPage;
+  final String? nextPage;
   final bool hasReachedMax;
   final DioException? error;
 
   const RemoteRecipeState({
     this.status = RecipeStatus.initial,
     this.recipeList = const <Recipe>[],
-    this.nextPage = '',
+    this.nextPage,
     this.hasReachedMax = false,
     this.error
   });
@@ -32,8 +32,8 @@ class RemoteRecipeState extends Equatable {
   }
   @override
   String toString() {
-    return '''RemoteRecipeState{status:$status, hasReachedMax$hasReachedMax, recipeList:${recipeList?.length}}''';
+    return '''RemoteRecipeState{status:$status, hasReachedMax:$hasReachedMax, recipeList:${recipeList.length} , nextPageLink:$nextPage}''';
   }
   @override
-  List<Object?> get props => [recipeList, status, hasReachedMax,error];
+  List<Object?> get props => [recipeList, status, hasReachedMax,nextPage,error];
 }

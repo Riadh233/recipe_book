@@ -3,13 +3,13 @@ import '../../data/remote/recipe_query_model.dart';
 
 class Recipe {
   String? label;
-  String? image;
+  RecipeImage? image;
   String? url;
-  String? cuisineType;
-  List<String>? dietLabels;
-  List<String>? mealType;
-  List<String>? ingredientLines;
-  List<APIIngredients>? ingredients;
+  List<String> cuisineType = [];
+  List<String> dietLabels = [];
+  List<String> mealType = [];
+  List<String> ingredientLines = [];
+  List<APIIngredients> ingredients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
@@ -25,6 +25,7 @@ class Recipe {
     required this.dietLabels,
     required this.mealType,
     required this.ingredientLines,
+    required this.cuisineType
   });
 
   factory Recipe.fromRecipeDto(RecipeDto recipeDto) {
@@ -34,6 +35,7 @@ class Recipe {
         ingredients: recipeDto.ingredients,
         calories: recipeDto.calories,
         totalWeight: recipeDto.totalWeight,
+        cuisineType:recipeDto.cuisineType,
         totalTime: recipeDto.totalTime,
         dietLabels: recipeDto.dietLabels,
         mealType: recipeDto.mealType,
@@ -47,6 +49,7 @@ class Recipe {
         ingredients: recipeEntity.ingredients,
         calories: recipeEntity.calories,
         totalWeight: recipeEntity.totalWeight,
+        cuisineType: recipeEntity.cuisineType,
         totalTime: recipeEntity.totalTime,
         dietLabels: recipeEntity.dietLabels,
         mealType: recipeEntity.mealType,

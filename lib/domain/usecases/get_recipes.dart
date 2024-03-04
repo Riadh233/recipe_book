@@ -18,8 +18,6 @@ class GetRecipesUseCase
     logger.log(Logger.level, params['from']);
     return repository.getRecipes(
         query: params.containsKey('query') ? params['query'] : DEFAULT_QUERY,
-        from: params.containsKey('from') ? params['from'] : DEFAULT_FROM,
-        to: params.containsKey('to') ? params['to'] : DEFAULT_TO,
         calories: params.containsKey('calories')
             ? params['calories']
             : DEFAULT_CALORIES,

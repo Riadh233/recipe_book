@@ -25,8 +25,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
   @override
   Future<DataState<List<Recipe>>> getRecipes(
       {required String query,
-      required int from,
-      required int to,
       required String calories,
       required String diet,
       required String cuisineType}) async {
@@ -35,14 +33,12 @@ class RecipeRepositoryImpl implements RecipeRepository {
           appKey: appKey,
           appId: appId,
           query: query,
-          from: from,
-          to: to,
           queryParameters: getQueryParameters(calories = calories , diet = diet, cuisineType = cuisineType));
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final hits = httpResponse.data.hits;
         return DataSuccess(hits!
             .map((apiHits) => Recipe.fromRecipeDto(apiHits.recipeDto))
-            .toList());
+            .toList(),httpResponse.data.links?.next.nextPage);
       } else {
         logger.log(Logger.level, "fetch failed");
         return DataFailed(DioException(
@@ -87,5 +83,27 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
     return recipes.map((recipeEntity) => Recipe.fromRecipeEntity(recipeEntity))
         as List<Recipe>;
+  }
+
+  @override
+  Future<DataState<List<Recipe>>> getNextPageRecipes({required String? nextPageUrl}) async {
+    try {
+      var httpResponse = await recipeService.getNextPageRecipes(nextPageUrl: nextPageUrl);
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        final hits = httpResponse.data.hits;
+        return DataSuccess(hits!
+            .map((apiHits) => Recipe.fromRecipeDto(apiHits.recipeDto))
+            .toList(),httpResponse.data.links?.next.nextPage);
+      } else {
+        logger.log(Logger.level, "fetch failed");
+        return DataFailed(DioException(
+            requestOptions: httpResponse.response.requestOptions,
+            response: httpResponse.response,
+            type: DioExceptionType.badResponse,
+            error: httpResponse.response.statusMessage));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
   }
 }

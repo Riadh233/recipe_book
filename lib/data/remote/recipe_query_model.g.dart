@@ -31,11 +31,11 @@ Map<String, dynamic> _$RecipeQueryModelToJson(RecipeQueryModel instance) =>
     };
 
 Links _$LinksFromJson(Map<String, dynamic> json) => Links(
-      self: NextPageLink.fromJson(json['self'] as Map<String, dynamic>),
+      next: NextPageLink.fromJson(json['next'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{
-      'self': instance.self,
+      'next': instance.next,
     };
 
 NextPageLink _$NextPageLinkFromJson(Map<String, dynamic> json) => NextPageLink(
@@ -52,35 +52,33 @@ ApiHits _$ApiHitsFromJson(Map<String, dynamic> json) => ApiHits(
     );
 
 Map<String, dynamic> _$ApiHitsToJson(ApiHits instance) => <String, dynamic>{
-      'recipeDto': instance.recipeDto,
+      'recipe': instance.recipeDto,
     };
 
 RecipeDto _$RecipeDtoFromJson(Map<String, dynamic> json) => RecipeDto(
       label: json['label'] as String?,
-      image: json['image'] as String?,
+      image: RecipeImage.fromJson(json['images'] as Map<String, dynamic>),
       url: json['url'] as String?,
-      ingredients: (json['ingredients'] as List<dynamic>?)
-          ?.map((e) => APIIngredients.fromJson(e as Map<String, dynamic>))
+      ingredients: (json['ingredients'] as List<dynamic>)
+          .map((e) => APIIngredients.fromJson(e as Map<String, dynamic>))
           .toList(),
       calories: (json['calories'] as num?)?.toDouble(),
       totalWeight: (json['totalWeight'] as num?)?.toDouble(),
       totalTime: (json['totalTime'] as num?)?.toDouble(),
-      dietLabels: (json['dietLabels'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      dietLabels: (json['dietLabels'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
-      mealType: (json['mealType'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      mealType:
+          (json['mealType'] as List<dynamic>).map((e) => e as String).toList(),
+      ingredientLines: (json['ingredientLines'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
-      ingredientLines: (json['ingredientLines'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-    )..cuisineType = (json['cuisineType'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList();
+    )..cuisineType =
+        (json['cuisineType'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$RecipeDtoToJson(RecipeDto instance) => <String, dynamic>{
       'label': instance.label,
-      'image': instance.image,
+      'images': instance.image,
       'url': instance.url,
       'cuisineType': instance.cuisineType,
       'dietLabels': instance.dietLabels,
@@ -90,6 +88,27 @@ Map<String, dynamic> _$RecipeDtoToJson(RecipeDto instance) => <String, dynamic>{
       'calories': instance.calories,
       'totalWeight': instance.totalWeight,
       'totalTime': instance.totalTime,
+    };
+
+RecipeImage _$RecipeImageFromJson(Map<String, dynamic> json) => RecipeImage(
+      SMALL: ApiImage.fromJson(json['SMALL'] as Map<String, dynamic>),
+      REGULAR: ApiImage.fromJson(json['REGULAR'] as Map<String, dynamic>),
+      THUMBNAIL: ApiImage.fromJson(json['THUMBNAIL'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$RecipeImageToJson(RecipeImage instance) =>
+    <String, dynamic>{
+      'THUMBNAIL': instance.THUMBNAIL,
+      'SMALL': instance.SMALL,
+      'REGULAR': instance.REGULAR,
+    };
+
+ApiImage _$ApiImageFromJson(Map<String, dynamic> json) => ApiImage(
+      url: json['url'] as String,
+    );
+
+Map<String, dynamic> _$ApiImageToJson(ApiImage instance) => <String, dynamic>{
+      'url': instance.url,
     };
 
 APIIngredients _$APIIngredientsFromJson(Map<String, dynamic> json) =>

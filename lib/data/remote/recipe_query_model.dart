@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:recipe_app/domain/model/recipe.dart';
 
 part 'recipe_query_model.g.dart';
 
@@ -24,25 +25,28 @@ class RecipeQueryModel {
 
   factory RecipeQueryModel.fromJson(Map<String, dynamic> json) =>
       _$RecipeQueryModelFromJson(json);
-
 }
+
 @JsonSerializable()
 class Links {
-  NextPageLink self;
-  Links({required this.self});
+  NextPageLink next;
 
-  factory Links.fromJson(Map<String, dynamic> json) =>
-      _$LinksFromJson(json);
+  Links({required this.next});
+
+  factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
 }
+
 @JsonSerializable()
 class NextPageLink {
   @JsonKey(name: 'href')
   String nextPage;
+
   NextPageLink({required this.nextPage});
 
   factory NextPageLink.fromJson(Map<String, dynamic> json) =>
       _$NextPageLinkFromJson(json);
 }
+
 @JsonSerializable()
 class ApiHits {
   @JsonKey(name: 'recipe')
@@ -57,13 +61,14 @@ class ApiHits {
 @JsonSerializable()
 class RecipeDto {
   String? label;
-  String? image;
+  @JsonKey(name: 'images')
+  RecipeImage image;
   String? url;
-  List<String>? cuisineType;
-  List<String>? dietLabels;
-  List<String>? mealType;
-  List<String>? ingredientLines;
-  List<APIIngredients>? ingredients;
+  List<String> cuisineType = [];
+  List<String> dietLabels = [];
+  List<String> mealType = [];
+  List<String> ingredientLines = [];
+  List<APIIngredients> ingredients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
@@ -79,11 +84,32 @@ class RecipeDto {
     required this.dietLabels,
     required this.mealType,
     required this.ingredientLines,
-
   });
 
   factory RecipeDto.fromJson(Map<String, dynamic> json) =>
       _$RecipeDtoFromJson(json);
+}
+
+@JsonSerializable()
+class RecipeImage {
+  ApiImage THUMBNAIL;
+  ApiImage SMALL;
+  ApiImage REGULAR;
+
+  RecipeImage({required this.SMALL, required this.REGULAR, required this.THUMBNAIL});
+
+  factory RecipeImage.fromJson(Map<String, dynamic> json) =>
+      _$RecipeImageFromJson(json);
+}
+
+@JsonSerializable()
+class ApiImage {
+  String url;
+
+  ApiImage({required this.url});
+
+  factory ApiImage.fromJson(Map<String, dynamic> json) =>
+      _$ApiImageFromJson(json);
 }
 
 @JsonSerializable()

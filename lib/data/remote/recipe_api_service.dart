@@ -4,19 +4,22 @@ import 'package:retrofit/retrofit.dart';
 
 part 'recipe_api_service.g.dart';
 
-@RestApi(baseUrl: 'https://api.edamam.com')
+@RestApi()
 abstract class RecipeApiService {
   factory RecipeApiService(Dio dio) = _RecipeApiService;
 
-  @GET('/search')
+  @GET('https://api.edamam.com/api/recipes/v2')
   Future<HttpResponse<RecipeQueryModel>> getRecipes({
     @Query("app_key") required String appKey,
     @Query("app_id") required String appId,
-    @Query("from") required int from ,
-    @Query("to") required int to ,
+    @Query("type")  String type = 'public',
     @Query("q") String? query,
     @Query("health") String health_label = 'alcohol-free',
     @Query("health") String health_label2 = 'pork-free',
     @Queries() required Map<String,dynamic> queryParameters,
    });
+
+  @GET('{nextPageUrl}')
+  Future<HttpResponse<RecipeQueryModel>> getNextPageRecipes({
+    @Path() String? nextPageUrl});
 }

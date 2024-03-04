@@ -3,13 +3,13 @@ import '../../domain/model/recipe.dart';
 
 class RecipeEntity {
   String? label;
-  String? image;
+  RecipeImage? image;
   String? url;
-  String? cuisineType;
-  List<String>? dietLabels;
-  List<String>? mealType;
-  List<String>? ingredientLines;
-  List<APIIngredients>? ingredients;
+  List<String> cuisineType = [];
+  List<String> dietLabels = [];
+  List<String> mealType = [];
+  List<String> ingredientLines = [];
+  List<APIIngredients> ingredients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
