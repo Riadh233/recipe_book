@@ -98,7 +98,7 @@ class RecipeItem extends StatelessWidget {
           recipe.label!,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
-          style: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
+          style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(
           recipe.cuisineType.isNotEmpty ? recipe.cuisineType[0] : '',

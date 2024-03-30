@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/domain/usecases/get_recipes.dart';
+import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/my_bloc_observer.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
@@ -26,15 +27,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final router = AppRouter.router(true);
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<RemoteRecipeBloc>(
+              create: (context) => getIt()
+                ..add(const GetRecipesEvent(query: DEFAULT_QUERY, filters: {}))),
+          BlocProvider<RecipeFilterCubit>(create: (context) => getIt())
+        ],
+        child:  MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
+            useMaterial3: true,
+          ),
+          routerDelegate: router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
+          routeInformationProvider: router.routeInformationProvider,
+        )
     );
   }
 }

@@ -59,22 +59,30 @@ RecipeDto _$RecipeDtoFromJson(Map<String, dynamic> json) => RecipeDto(
       label: json['label'] as String?,
       image: RecipeImage.fromJson(json['images'] as Map<String, dynamic>),
       url: json['url'] as String?,
-      ingredients: (json['ingredients'] as List<dynamic>)
-          .map((e) => APIIngredients.fromJson(e as Map<String, dynamic>))
+      ingredients: (json['ingredients'] as List<dynamic>?)
+          ?.map((e) => APIIngredients.fromJson(e as Map<String, dynamic>))
           .toList(),
       calories: (json['calories'] as num?)?.toDouble(),
       totalWeight: (json['totalWeight'] as num?)?.toDouble(),
       totalTime: (json['totalTime'] as num?)?.toDouble(),
-      dietLabels: (json['dietLabels'] as List<dynamic>)
-          .map((e) => e as String)
+      dietLabels: (json['dietLabels'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      mealType:
-          (json['mealType'] as List<dynamic>).map((e) => e as String).toList(),
-      ingredientLines: (json['ingredientLines'] as List<dynamic>)
-          .map((e) => e as String)
+      mealType: (json['mealType'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-    )..cuisineType =
-        (json['cuisineType'] as List<dynamic>).map((e) => e as String).toList();
+      totalNutrients: TotalNutrients.fromJson(
+          json['totalNutrients'] as Map<String, dynamic>),
+      ingredientLines: (json['ingredientLines'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    )
+      ..cuisineType = (json['cuisineType'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList()
+      ..dishType = (json['dishType'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList();
 
 Map<String, dynamic> _$RecipeDtoToJson(RecipeDto instance) => <String, dynamic>{
       'label': instance.label,
@@ -84,6 +92,8 @@ Map<String, dynamic> _$RecipeDtoToJson(RecipeDto instance) => <String, dynamic>{
       'dietLabels': instance.dietLabels,
       'mealType': instance.mealType,
       'ingredientLines': instance.ingredientLines,
+      'dishType': instance.dishType,
+      'totalNutrients': instance.totalNutrients,
       'ingredients': instance.ingredients,
       'calories': instance.calories,
       'totalWeight': instance.totalWeight,
@@ -121,4 +131,36 @@ Map<String, dynamic> _$APIIngredientsToJson(APIIngredients instance) =>
     <String, dynamic>{
       'text': instance.name,
       'weight': instance.weight,
+    };
+
+TotalNutrients _$TotalNutrientsFromJson(Map<String, dynamic> json) =>
+    TotalNutrients(
+      ENERC_KCAL: Nutrient.fromJson(json['ENERC_KCAL'] as Map<String, dynamic>),
+      FAT: Nutrient.fromJson(json['FAT'] as Map<String, dynamic>),
+      PROCNT: Nutrient.fromJson(json['PROCNT'] as Map<String, dynamic>),
+      SUGAR: Nutrient.fromJson(json['SUGAR'] as Map<String, dynamic>),
+      FIBTG: Nutrient.fromJson(json['FIBTG'] as Map<String, dynamic>),
+      CHOCDF: Nutrient.fromJson(json['CHOCDF'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$TotalNutrientsToJson(TotalNutrients instance) =>
+    <String, dynamic>{
+      'ENERC_KCAL': instance.ENERC_KCAL,
+      'CHOCDF': instance.CHOCDF,
+      'FAT': instance.FAT,
+      'PROCNT': instance.PROCNT,
+      'SUGAR': instance.SUGAR,
+      'FIBTG': instance.FIBTG,
+    };
+
+Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(
+      label: json['label'] as String,
+      quantity: (json['quantity'] as num).toDouble(),
+      unit: json['unit'] as String,
+    );
+
+Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
+      'label': instance.label,
+      'quantity': instance.quantity,
+      'unit': instance.unit,
     };

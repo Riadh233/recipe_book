@@ -9,7 +9,9 @@ class Recipe {
   List<String> dietLabels = [];
   List<String> mealType = [];
   List<String> ingredientLines = [];
+  List<String> dishType = [];
   List<APIIngredients> ingredients = [];
+  List<String> totalNutrients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
@@ -24,7 +26,9 @@ class Recipe {
     required this.totalTime,
     required this.dietLabels,
     required this.mealType,
+    required this.dishType,
     required this.ingredientLines,
+    required this.totalNutrients,
     required this.cuisineType
   });
 
@@ -32,14 +36,16 @@ class Recipe {
     return Recipe(label: recipeDto.label,
         image: recipeDto.image,
         url: recipeDto.url,
-        ingredients: recipeDto.ingredients,
+        ingredients: recipeDto.ingredients ?? [],
         calories: recipeDto.calories,
         totalWeight: recipeDto.totalWeight,
-        cuisineType:recipeDto.cuisineType,
+        cuisineType:recipeDto.cuisineType ?? [],
         totalTime: recipeDto.totalTime,
-        dietLabels: recipeDto.dietLabels,
-        mealType: recipeDto.mealType,
-        ingredientLines: recipeDto.ingredientLines);
+        dietLabels: recipeDto.dietLabels ?? [],
+        dishType: recipeDto.dishType ?? [],
+        mealType: recipeDto.mealType ?? [],
+        totalNutrients: recipeDto.getNutrients(),
+        ingredientLines: recipeDto.ingredientLines ?? []);
   }
 
   factory Recipe.fromRecipeEntity(RecipeEntity recipeEntity) {
@@ -52,7 +58,9 @@ class Recipe {
         cuisineType: recipeEntity.cuisineType,
         totalTime: recipeEntity.totalTime,
         dietLabels: recipeEntity.dietLabels,
+        dishType: recipeEntity.dishType,
         mealType: recipeEntity.mealType,
+        totalNutrients: recipeEntity.totalNutrients,
         ingredientLines: recipeEntity.ingredientLines);
   }
 
@@ -62,6 +70,14 @@ class Recipe {
 
   String getWeight() {
     return totalWeight == null ? '0 g' : '${totalWeight!.floor()} g';
+  }
+
+  String getDishType(){
+    final words = dishType[0].split(' ');
+    if(words.length > 1){
+      return words.join('\n');
+    }
+    return dishType[0];
   }
 
   String? getTime() {

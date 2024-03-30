@@ -9,7 +9,9 @@ class RecipeEntity {
   List<String> dietLabels = [];
   List<String> mealType = [];
   List<String> ingredientLines = [];
+  List<String> dishType = [];
   List<APIIngredients> ingredients = [];
+  List<String> totalNutrients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
@@ -24,6 +26,8 @@ class RecipeEntity {
     required this.totalTime,
     required this.dietLabels,
     required this.mealType,
+    required this.dishType,
+    required this.totalNutrients,
     required this.ingredientLines,
   });
 
@@ -32,13 +36,15 @@ class RecipeEntity {
         label: recipeDto.label,
         image: recipeDto.image,
         url: recipeDto.url,
-        ingredients: recipeDto.ingredients,
+        ingredients: recipeDto.ingredients ?? [],
         calories: recipeDto.calories,
         totalWeight: recipeDto.totalWeight,
         totalTime: recipeDto.totalTime,
-        dietLabels: recipeDto.dietLabels,
-        mealType: recipeDto.mealType,
-        ingredientLines: recipeDto.ingredientLines);
+        dietLabels: recipeDto.dietLabels ?? [],
+        mealType: recipeDto.mealType ?? [],
+        dishType: recipeDto.dishType ?? [],
+        totalNutrients: recipeDto.getNutrients(),
+        ingredientLines: recipeDto.ingredientLines ?? []);
   }
 
   factory RecipeEntity.fromRecipe(Recipe recipe){
@@ -51,7 +57,9 @@ class RecipeEntity {
         totalWeight: recipe.totalWeight,
         totalTime: recipe.totalTime,
         dietLabels: recipe.dietLabels,
+        dishType: recipe.dishType,
         mealType: recipe.mealType,
+        totalNutrients: recipe.totalNutrients,
         ingredientLines: recipe.ingredientLines
     );
   }

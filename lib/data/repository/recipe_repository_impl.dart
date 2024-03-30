@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
@@ -7,7 +6,6 @@ import 'package:recipe_app/utils/constants.dart';
 import 'package:recipe_app/utils/data_state.dart';
 import 'package:recipe_app/data/local/recipe_entity.dart';
 import 'package:recipe_app/data/remote/recipe_api_service.dart';
-
 import '../../domain/model/recipe.dart';
 import '../../domain/repository/recipe_repository.dart';
 import '../local/database_service.dart';
@@ -24,16 +22,18 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
   @override
   Future<DataState<List<Recipe>>> getRecipes(
-      {required String query,
-      required String calories,
-      required String diet,
-      required String cuisineType}) async {
+      { required String query,
+        required String mealType,
+        required String dishType,
+        required String diet,
+        required String calories,
+        required String totalTime,}) async {
     try {
       var httpResponse = await recipeService.getRecipes(
           appKey: appKey,
           appId: appId,
           query: query,
-          queryParameters: getQueryParameters(calories = calories , diet = diet, cuisineType = cuisineType));
+          queryParams: {'mealType':'Dinner','time':'1-60'});
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final hits = httpResponse.data.hits;
         return DataSuccess(hits!
@@ -52,18 +52,30 @@ class RecipeRepositoryImpl implements RecipeRepository {
     }
   }
 
-  Map<String, dynamic> getQueryParameters(
-      String calories, String diet, String cuisineType) {
+  Map<String, dynamic> getQueryParameters({
+    required String mealType,
+    required String dishType,
+    required String diet,
+    required String calories,
+    required String totalTime,
+  }) {
     Map<String, dynamic> queryParameters = {};
     if (calories.isNotEmpty) {
-      queryParameters['calories'] = calories;
+      queryParameters[CALORIES] = calories;
     }
     if (diet.isNotEmpty) {
-      queryParameters['diet'] = diet;
+      queryParameters[DIET_TYPE] = diet;
     }
-    if (cuisineType.isNotEmpty) {
-      queryParameters['cuisineType'] = cuisineType;
+    if (mealType.isNotEmpty) {
+      queryParameters[MEAL_TYPE] = mealType;
     }
+    if (dishType.isNotEmpty) {
+      queryParameters[DISH_TYPE] = dishType;
+    }
+    if (totalTime.isNotEmpty) {
+      queryParameters[TOTAL_TIME] = totalTime;
+    }
+
     return queryParameters;
   }
 
@@ -95,7 +107,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
             .map((apiHits) => Recipe.fromRecipeDto(apiHits.recipeDto))
             .toList(),httpResponse.data.links?.next.nextPage);
       } else {
-        logger.log(Logger.level, "fetch failed");
         return DataFailed(DioException(
             requestOptions: httpResponse.response.requestOptions,
             response: httpResponse.response,

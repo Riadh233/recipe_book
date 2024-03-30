@@ -4,6 +4,7 @@ import 'package:recipe_app/data/remote/recipe_api_service.dart';
 import 'package:recipe_app/data/repository/recipe_repository_impl.dart';
 import 'package:recipe_app/domain/usecases/get_next_page_recipes.dart';
 import 'package:recipe_app/domain/usecases/get_recipes.dart';
+import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 
 import '../data/local/database_service.dart';
@@ -19,4 +20,5 @@ Future<void> initializeDependencies() async {
   getIt.registerSingleton<GetRecipesUseCase>(GetRecipesUseCase(repository: getIt()));
   getIt.registerSingleton<GetNextPageRecipesUseCase>(GetNextPageRecipesUseCase(repository: getIt()));
   getIt.registerFactory(() => RemoteRecipeBloc(getIt(),getIt()));
+  getIt.registerFactory(() => RecipeFilterCubit());
 }

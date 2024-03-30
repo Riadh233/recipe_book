@@ -15,14 +15,12 @@ class GetRecipesUseCase
 
   @override
   Future<DataState<List<Recipe>>> call({required Map<String, dynamic> params}) {
-    logger.log(Logger.level, params['from']);
     return repository.getRecipes(
         query: params.containsKey('query') ? params['query'] : DEFAULT_QUERY,
-        calories: params.containsKey('calories')
-            ? params['calories']
-            : DEFAULT_CALORIES,
-        diet: params.containsKey('diet') ? params['diet'] : '',
-        cuisineType:
-            params.containsKey('cuisineType') ? params['cuisineType'] : '');
+        calories: params.containsKey(CALORIES) ? params[CALORIES] : '',
+        diet: params.containsKey(DIET_TYPE) ? params[DIET_TYPE] : '',
+        mealType: params.containsKey(MEAL_TYPE) ? params[MEAL_TYPE] : '',
+        dishType: params.containsKey(DISH_TYPE) ? params[DISH_TYPE] : '',
+        totalTime:params.containsKey(TOTAL_TIME) ? params[TOTAL_TIME] : '');
   }
 }

@@ -26,9 +26,9 @@ class _RecipeApiService implements RecipeApiService {
     String? query,
     String health_label = 'alcohol-free',
     String health_label2 = 'pork-free',
-    required Map<String, dynamic> queryParameters,
+    required Map<String, dynamic> queryParams,
   }) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'app_key': appKey,
       r'app_id': appId,
@@ -37,10 +37,11 @@ class _RecipeApiService implements RecipeApiService {
       r'health': health_label,
       r'health': health_label2,
     };
-    queryParameters.addAll(queryParameters);
+    queryParameters.addAll(queryParams);
     queryParameters.removeWhere((k, v) => v == null);
+    logger.log(Logger.level, 'query parameters:${queryParameters}');
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<RecipeQueryModel>>(Options(
       method: 'GET',
@@ -66,11 +67,11 @@ class _RecipeApiService implements RecipeApiService {
   @override
   Future<HttpResponse<RecipeQueryModel>> getNextPageRecipes(
       {String? nextPageUrl}) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<RecipeQueryModel>>(Options(
       method: 'GET',

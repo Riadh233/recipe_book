@@ -64,11 +64,13 @@ class RecipeDto {
   @JsonKey(name: 'images')
   RecipeImage image;
   String? url;
-  List<String> cuisineType = [];
-  List<String> dietLabels = [];
-  List<String> mealType = [];
-  List<String> ingredientLines = [];
-  List<APIIngredients> ingredients = [];
+  List<String>? cuisineType = [];
+  List<String>? dietLabels = [];
+  List<String>? mealType = [];
+  List<String>? ingredientLines = [];
+  List<String>? dishType = [];
+  TotalNutrients totalNutrients;
+  List<APIIngredients>? ingredients = [];
   double? calories;
   double? totalWeight;
   double? totalTime;
@@ -83,11 +85,23 @@ class RecipeDto {
     required this.totalTime,
     required this.dietLabels,
     required this.mealType,
+    required this.totalNutrients,
     required this.ingredientLines,
   });
 
   factory RecipeDto.fromJson(Map<String, dynamic> json) =>
       _$RecipeDtoFromJson(json);
+
+  List<String> getNutrients() {
+    return [
+      '${totalNutrients.ENERC_KCAL.label}: ${totalNutrients.ENERC_KCAL.quantity.round()} ${totalNutrients.ENERC_KCAL.unit}',
+      '${totalNutrients.CHOCDF.label}: ${totalNutrients.CHOCDF.quantity.round()} ${totalNutrients.CHOCDF.unit}',
+      '${totalNutrients.FAT.label}: ${totalNutrients.FAT.quantity.round()} ${totalNutrients.FAT.unit}',
+      '${totalNutrients.FIBTG.label}: ${totalNutrients.FIBTG.quantity.round()} ${totalNutrients.FIBTG.unit}',
+      '${totalNutrients.PROCNT.label}: ${totalNutrients.PROCNT.quantity.round()} ${totalNutrients.PROCNT.unit}',
+      '${totalNutrients.SUGAR.label}: ${totalNutrients.SUGAR.quantity.round()} ${totalNutrients.SUGAR.unit}',
+    ];
+  }
 }
 
 @JsonSerializable()
@@ -96,7 +110,8 @@ class RecipeImage {
   ApiImage SMALL;
   ApiImage REGULAR;
 
-  RecipeImage({required this.SMALL, required this.REGULAR, required this.THUMBNAIL});
+  RecipeImage(
+      {required this.SMALL, required this.REGULAR, required this.THUMBNAIL});
 
   factory RecipeImage.fromJson(Map<String, dynamic> json) =>
       _$RecipeImageFromJson(json);
@@ -126,26 +141,31 @@ class APIIngredients {
   factory APIIngredients.fromJson(Map<String, dynamic> json) =>
       _$APIIngredientsFromJson(json);
 }
-//
-// @JsonSerializable()
-// class TotalNutrients {
-//   final Nutrient ENERC_KCAL;
-//   final Nutrient FAT;
-//   final Nutrient PROCNT;
-//   final Nutrient SUGAR;
-//   factory TotalNutrients.fromJson(Map<String, dynamic> json) => _$TotalNutrientsFromJson(json);
-//   Map<String, dynamic> toJson() => _$TotalNutrientsToJson(this);
-//
-//   TotalNutrients({required this.ENERC_KCAL, required this.FAT, required this.PROCNT, required this.SUGAR});
-// }
-// @JsonSerializable()
-// class Nutrient{
-//   final String label;
-//   final double quantity;
-//   final String unit;
-//
-//   Nutrient({required this.label, required this.quantity, required this.unit});
-//
-//   factory Nutrient.fromJson(Map<String, dynamic> json) => _$NutrientFromJson(json);
-//   Map<String, dynamic> toJson() => _$NutrientToJson(this);
-// }
+
+@JsonSerializable()
+class TotalNutrients {
+  final Nutrient ENERC_KCAL;
+  final Nutrient CHOCDF;
+  final Nutrient FAT;
+  final Nutrient PROCNT;
+  final Nutrient SUGAR;
+  final Nutrient FIBTG;
+
+  factory TotalNutrients.fromJson(Map<String, dynamic> json) =>
+      _$TotalNutrientsFromJson(json);
+
+  TotalNutrients(
+      {required this.ENERC_KCAL, required this.FAT, required this.PROCNT, required this.SUGAR, required this.FIBTG, required this.CHOCDF,});
+}
+
+@JsonSerializable()
+class Nutrient {
+  final String label;
+  final double quantity;
+  final String unit;
+
+  Nutrient({required this.label, required this.quantity, required this.unit});
+
+  factory Nutrient.fromJson(Map<String, dynamic> json) =>
+      _$NutrientFromJson(json);
+}

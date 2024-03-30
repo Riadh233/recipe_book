@@ -1,5 +1,7 @@
+import 'package:logger/logger.dart';
 import 'package:recipe_app/data/remote/recipe_query_model.dart';
 import 'package:dio/dio.dart';
+import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'recipe_api_service.g.dart';
@@ -16,7 +18,7 @@ abstract class RecipeApiService {
     @Query("q") String? query,
     @Query("health") String health_label = 'alcohol-free',
     @Query("health") String health_label2 = 'pork-free',
-    @Queries() required Map<String,dynamic> queryParameters,
+    @Queries() required Map<String,dynamic> queryParams,
    });
 
   @GET('{nextPageUrl}')

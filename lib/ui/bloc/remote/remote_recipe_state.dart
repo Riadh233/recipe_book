@@ -1,15 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:recipe_app/utils/constants.dart';
 
 import '../../../domain/model/recipe.dart';
 
-enum RecipeStatus { initial, success, failure }
+enum RecipeStatus { initial, success, failure,searching }
 
 class RemoteRecipeState extends Equatable {
   final List<Recipe> recipeList;
   final RecipeStatus status;
   final String? nextPage;
   final bool hasReachedMax;
+  final String query;
+  final Map<String,dynamic> filters;
   final DioException? error;
 
   const RemoteRecipeState({
@@ -17,6 +20,8 @@ class RemoteRecipeState extends Equatable {
     this.recipeList = const <Recipe>[],
     this.nextPage,
     this.hasReachedMax = false,
+    this.query = DEFAULT_QUERY,
+    this.filters = const {},
     this.error
   });
 
@@ -35,5 +40,5 @@ class RemoteRecipeState extends Equatable {
     return '''RemoteRecipeState{status:$status, hasReachedMax:$hasReachedMax, recipeList:${recipeList.length} , nextPageLink:$nextPage}''';
   }
   @override
-  List<Object?> get props => [recipeList, status, hasReachedMax,nextPage,error];
+  List<Object?> get props => [recipeList, status, hasReachedMax,nextPage,error,query,filters];
 }
