@@ -1,36 +1,20 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:recipe_app/ui/bloc/filter_cubit/filter_state.dart';
 
-import '../../../utils/constants.dart';
-import '../../screens/HomeScreen.dart';
+import 'filter_state.dart';
 
-class RecipeFilterCubit extends Cubit<RecipeFilterState> {
-  RecipeFilterCubit() : super(FiltersInitialState(filters: DEFAULT_FILTERS));
+class FilterCubit extends Cubit<FilterState> {
+  FilterCubit() : super(FilterState.initial());
 
-  void onAddChoiceFilter(String filter,String filterName){
-    final newFilters = Map.of(state.filters);
+  void updateSliderValue(RangeValues newRange, String filterName) {
+    final updatedRangeValuesMap = Map<String, RangeValues>.from(state.rangeValuesMap);
+    updatedRangeValuesMap[filterName] = newRange;
+    emit(FilterState(rangeValuesMap: updatedRangeValuesMap,inputChipsMap: state.inputChipsMap));
+  }
+  void selectChip(String filter,String filterName){
+    final newFilters = Map.of(state.inputChipsMap);
     newFilters[filterName] = filter;
-    if (filter.isEmpty) {
-      newFilters.remove(filterName);
-    }
-    emit(FilterAddedState(filters: newFilters));
-  }
 
-  void onAddRangeFilter(RangeValues filter,String filterName) {
-    final newFilters = Map.of(state.filters);
-    newFilters[filterName] = filter;
-    logger.log(Logger.level, filter.toString());
-    emit(FilterAddedState(filters: newFilters));
-  }
-
-  void onResetFilters() {
-    emit(FiltersInitialState(filters:  DEFAULT_FILTERS));
-  }
-  void onApplyFilters() {
-    emit(FiltersInitialState(filters:  {}));
+    emit(FilterState(rangeValuesMap: state.rangeValuesMap,inputChipsMap: newFilters));
   }
 }

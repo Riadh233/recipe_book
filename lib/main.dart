@@ -17,7 +17,6 @@ void main() async {
 
   Bloc.observer = MyBlocObserver();
 
-
   runApp(const MyApp());
 }
 
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<RemoteRecipeBloc>(
               create: (context) => getIt()
                 ..add(const GetRecipesEvent(query: DEFAULT_QUERY, filters: {}))),
-          BlocProvider<RecipeFilterCubit>(create: (context) => getIt())
+          BlocProvider<FilterCubit>(create: (context) => getIt())
         ],
         child:  MaterialApp.router(
           title: 'Flutter Demo',

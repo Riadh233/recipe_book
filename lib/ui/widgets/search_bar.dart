@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
-import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
@@ -58,72 +57,72 @@ class RecipeSearchBar extends StatelessWidget {
                           return Stack(
                             children: [
                               const RecipeFilter(),
-                              Positioned(
-                                  bottom: 5,
-                                  left: 0,
-                                  right: 0,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          context.read<RecipeFilterCubit>()
-                                              .onResetFilters();
-                                        },
-
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.grey,
-                                          elevation: 8.0,
-                                          minimumSize: const Size(130, 40),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                16.0), // Adjust corner radius for roundness
-                                          ),
-                                        ),
-                                        child: Text(
-                                          'Reset',
-                                          style: GoogleFonts.outfit(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 15),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          // context.read<RecipeFilterCubit>().onApplyFilters();
-                                          context.pop();
-                                          context.read<RemoteRecipeBloc>()
-                                              .add(GetRecipesEvent(
-                                              filters: context
-                                                  .read<RecipeFilterCubit>()
-                                                  .state
-                                                  .filters, query: context
-                                              .read<RemoteRecipeBloc>()
-                                              .state
-                                              .query));
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.amber,
-                                          elevation: 8.0,
-                                          minimumSize: const Size(130, 40),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                16.0), // Adjust corner radius for roundness
-                                          ),
-                                        ),
-                                        child: Text(
-                                          'Apply',
-                                          style: GoogleFonts.outfit(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ))
+                              // Positioned(
+                              //     bottom: 5,
+                              //     left: 0,
+                              //     right: 0,
+                              //     child: Row(
+                              //       mainAxisAlignment:
+                              //       MainAxisAlignment.center,
+                              //       children: [
+                              //         ElevatedButton(
+                              //           onPressed: () {
+                              //             context.read<RecipeFilterCubit>()
+                              //                 .onResetFilters();
+                              //           },
+                              //
+                              //           style: ElevatedButton.styleFrom(
+                              //             backgroundColor: Colors.grey,
+                              //             elevation: 8.0,
+                              //             minimumSize: const Size(130, 40),
+                              //             shape: RoundedRectangleBorder(
+                              //               borderRadius: BorderRadius.circular(
+                              //                   16.0), // Adjust corner radius for roundness
+                              //             ),
+                              //           ),
+                              //           child: Text(
+                              //             'Reset',
+                              //             style: GoogleFonts.outfit(
+                              //                 fontSize: 15,
+                              //                 fontWeight: FontWeight.bold,
+                              //                 color: Colors.white),
+                              //           ),
+                              //         ),
+                              //         const SizedBox(width: 15),
+                              //         ElevatedButton(
+                              //           onPressed: () {
+                              //             // context.read<RecipeFilterCubit>().onApplyFilters();
+                              //             context.pop();
+                              //             context.read<RemoteRecipeBloc>()
+                              //                 .add(GetRecipesEvent(
+                              //                 filters: context
+                              //                     .read<RecipeFilterCubit>()
+                              //                     .state
+                              //                     .filters, query: context
+                              //                 .read<RemoteRecipeBloc>()
+                              //                 .state
+                              //                 .query));
+                              //           },
+                              //           style: ElevatedButton.styleFrom(
+                              //             backgroundColor: Colors.amber,
+                              //             elevation: 8.0,
+                              //             minimumSize: const Size(130, 40),
+                              //             shape: RoundedRectangleBorder(
+                              //               borderRadius: BorderRadius.circular(
+                              //                   16.0), // Adjust corner radius for roundness
+                              //             ),
+                              //           ),
+                              //           child: Text(
+                              //             'Apply',
+                              //             style: GoogleFonts.outfit(
+                              //                 fontSize: 15,
+                              //                 fontWeight: FontWeight.bold,
+                              //                 color: Colors.white),
+                              //           ),
+                              //         ),
+                              //
+                              //       ],
+                              //     ))
                             ],
                           );
                         },
@@ -163,15 +162,12 @@ class RecipeSearchBar extends StatelessWidget {
             if (query.isNotEmpty) {
               context.read<RemoteRecipeBloc>().add(GetRecipesEvent(
                   query: query,
-                  filters: context
-                      .read<RecipeFilterCubit>()
-                      .state
-                      .filters));
-              logger.log(
-                  Logger.level, context
-                  .read<RecipeFilterCubit>()
-                  .state
-                  .filters);
+                  filters: {}));
+              // logger.log(
+              //     Logger.level, context
+              //     .read<RecipeFilterCubit>()
+              //     .state
+              //     .filters);
               controller.closeView(query);
               focusNode.unfocus();
             }

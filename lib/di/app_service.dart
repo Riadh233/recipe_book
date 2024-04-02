@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:recipe_app/data/remote/recipe_api_service.dart';
 import 'package:recipe_app/data/repository/recipe_repository_impl.dart';
@@ -20,5 +21,5 @@ Future<void> initializeDependencies() async {
   getIt.registerSingleton<GetRecipesUseCase>(GetRecipesUseCase(repository: getIt()));
   getIt.registerSingleton<GetNextPageRecipesUseCase>(GetNextPageRecipesUseCase(repository: getIt()));
   getIt.registerFactory(() => RemoteRecipeBloc(getIt(),getIt()));
-  getIt.registerFactory(() => RecipeFilterCubit());
+  getIt.registerFactory(() => FilterCubit());
 }

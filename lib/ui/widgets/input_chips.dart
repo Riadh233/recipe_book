@@ -1,13 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/filter_state.dart';
-import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_event.dart';
-import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/constants.dart';
 
 class InputChips extends StatelessWidget {
@@ -19,8 +13,9 @@ class InputChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecipeFilterCubit, RecipeFilterState>(
-        builder: (BuildContext context, RecipeFilterState state) {
+    return BlocSelector<FilterCubit, FilterState,String?>(
+      selector: (state) => state.inputChipsMap[filterName],
+        builder: (BuildContext context, String? selectedChip) {
       return Wrap(
         alignment: WrapAlignment.start,
         direction: Axis.horizontal,
@@ -31,16 +26,16 @@ class InputChips extends StatelessWidget {
             return filterName != DIET_TYPE
                 ? InputChip(
                     label: Text(filters[index]),
-                    selected: state.filters[filterName] == filters[index],
+                    selected: selectedChip == filters[index],
                     onSelected: (bool selected) {
-                      if (state.filters[filterName] == filters[index]) {
+                      if (selectedChip == filters[index]) {
                         context
-                            .read<RecipeFilterCubit>()
-                            .onAddChoiceFilter('', filterName);
+                            .read<FilterCubit>()
+                            .selectChip('',filterName);
                       } else {
                         context
-                            .read<RecipeFilterCubit>()
-                            .onAddChoiceFilter(filters[index], filterName);
+                            .read<FilterCubit>()
+                            .selectChip(filters[index],filterName);
                       }
                     },
                     selectedColor: Colors.amberAccent,
@@ -51,19 +46,17 @@ class InputChips extends StatelessWidget {
                   )
                 : InputChip(
                     label: Text(filters[index]),
-                    selected: stringToList(state.filters[filterName])
+                    selected: stringToList(selectedChip)
                         .contains(filters[index]),
                     onSelected: (bool selected) {
                       var currentFilter =
-                          stringToList(state.filters[filterName]);
+                          stringToList(selectedChip);
                       if (currentFilter.contains(filters[index])) {
-                        context.read<RecipeFilterCubit>().onAddChoiceFilter(
-                            listToString(currentFilter..remove(filters[index])),
-                            filterName);
+                        context.read<FilterCubit>().selectChip(
+                            listToString(currentFilter..remove(filters[index])),filterName);
                       } else {
-                        context.read<RecipeFilterCubit>().onAddChoiceFilter(
-                            listToString(currentFilter..add(filters[index])),
-                            filterName);
+                        context.read<FilterCubit>().selectChip(
+                            listToString(currentFilter..add(filters[index])),filterName);
                       }
                     },
                     selectedColor: Colors.amberAccent,

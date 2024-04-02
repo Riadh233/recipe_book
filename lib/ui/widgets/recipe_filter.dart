@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/ui/widgets/filter_range_slider.dart';
-import 'package:recipe_app/ui/widgets/range_slider_test.dart';
 
 import '../../utils/constants.dart';
 import 'input_chips.dart';
@@ -51,10 +50,10 @@ class RecipeFilter extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                FilterRangeSlider(
+                const FilterRangeSlider(
                   filterName: CALORIES,
-                  minValue: (context.read<RecipeFilterCubit>().state.filters[CALORIES] as RangeValues).start,
-                  maxValue: (context.read<RecipeFilterCubit>().state.filters[CALORIES] as RangeValues).end,
+                  minValue: 0,
+                  maxValue: 10000,
                   unit: 'Kcal',
                 ),
                 const SizedBox(
@@ -68,10 +67,10 @@ class RecipeFilter extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                FilterRangeSlider(
+                const FilterRangeSlider(
                   filterName: TOTAL_TIME,
-                  minValue: (context.read<RecipeFilterCubit>().state.filters[TOTAL_TIME] as RangeValues).start,
-                  maxValue: (context.read<RecipeFilterCubit>().state.filters[TOTAL_TIME] as RangeValues).end,
+                  minValue: 0,
+                  maxValue: 300,
                   unit: 'Min',
                 ),
                 const SizedBox(
@@ -122,17 +121,7 @@ class RecipeFilter extends StatelessWidget {
                   filters: DIET_LABELS,
                   filterName: DIET_TYPE,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text('Calories Range',
-                    style: GoogleFonts.outfit(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                const SizedBox(
-                  height: 10,
-                ),
+
               ],
             ),
           ),
