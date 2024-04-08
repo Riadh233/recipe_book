@@ -6,6 +6,7 @@ abstract class RecipeRepository {
     required String query,
     required String mealType,
     required String dishType,
+    required String cuisineType,
     required String diet,
     required String calories,
     required String totalTime,

@@ -1,13 +1,20 @@
-
 import 'package:flutter/material.dart';
 
 const String MEAL_TYPE = 'mealType';
 const String DISH_TYPE = 'dishType';
+const String CUISINE_TYPE = 'cuisineType';
 const String DIET_TYPE = 'diet';
 const String CALORIES = 'calories';
 const String TOTAL_TIME = 'time';
-const String DEFAULT_QUERY = 'chicken';
-const Map<String,dynamic> DEFAULT_FILTERS = {MEAL_TYPE:'',DISH_TYPE:'',CALORIES:RangeValues(0, 10000),TOTAL_TIME:RangeValues(0, 300)};
+const List<String> SUGGESTION_QUERIES= ['chicken','meat','fish','cake','bread','pasta','orange juice'];
+const Map<String, String> DEFAULT_FILTERS = {
+  CALORIES: '0-10000',
+  TOTAL_TIME: '0-300',
+  MEAL_TYPE: '',
+  DISH_TYPE: '',
+  DIET_TYPE: '',
+  CUISINE_TYPE: 'All',
+};
 const List<String> DISH_TYPES = [
   "Biscuits and Cookies",
   "Bread",
@@ -35,6 +42,7 @@ const List<String> DISH_TYPES = [
   "Sweets",
 ];
 const List<String> CUISINE_TYPES = [
+  'All',
   "American",
   "Asian",
   "British",

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<RemoteRecipeBloc>(
               create: (context) => getIt()
-                ..add(const GetRecipesEvent(query: DEFAULT_QUERY, filters: {}))),
+                ..add(const GetRecipesEvent(query: '', filters: DEFAULT_FILTERS))),
           BlocProvider<FilterCubit>(create: (context) => getIt())
         ],
         child:  MaterialApp.router(

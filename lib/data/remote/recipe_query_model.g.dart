@@ -31,7 +31,9 @@ Map<String, dynamic> _$RecipeQueryModelToJson(RecipeQueryModel instance) =>
     };
 
 Links _$LinksFromJson(Map<String, dynamic> json) => Links(
-      next: NextPageLink.fromJson(json['next'] as Map<String, dynamic>),
+      next: json['next'] == null
+          ? null
+          : NextPageLink.fromJson(json['next'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LinksToJson(Links instance) => <String, dynamic>{

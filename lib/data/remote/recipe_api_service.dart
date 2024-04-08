@@ -10,14 +10,13 @@ part 'recipe_api_service.g.dart';
 abstract class RecipeApiService {
   factory RecipeApiService(Dio dio) = _RecipeApiService;
 
-  @GET('https://api.edamam.com/api/recipes/v2')
+  @GET('http://api.edamam.com/api/recipes/v2')
   Future<HttpResponse<RecipeQueryModel>> getRecipes({
     @Query("app_key") required String appKey,
     @Query("app_id") required String appId,
     @Query("type")  String type = 'public',
     @Query("q") String? query,
-    @Query("health") String health_label = 'alcohol-free',
-    @Query("health") String health_label2 = 'pork-free',
+    @Query("health") List<String> health_label = const ['alcohol-free','pork-free'],
     @Queries() required Map<String,dynamic> queryParams,
    });
 

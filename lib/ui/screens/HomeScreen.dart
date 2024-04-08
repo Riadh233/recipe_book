@@ -1,14 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
+import 'package:recipe_app/ui/widgets/home_header.dart';
 import 'package:recipe_app/ui/widgets/recipes_list.dart';
 
 import '../../di/app_service.dart';
 import '../../utils/constants.dart';
 import '../bloc/remote/remote_recipe_event.dart';
+import '../widgets/CategoryChips.dart';
 import '../widgets/search_bar.dart';
 
 final logger = Logger();
@@ -24,7 +28,10 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
+              //const HomeHeader(),
+              const SizedBox(height: 10,),
               RecipeSearchBar(),
+              const CategoryChips(),
               const Expanded(child: RecipesList()),
             ],
           ),

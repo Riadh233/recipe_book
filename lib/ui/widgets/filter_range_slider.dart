@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -22,21 +19,28 @@ class FilterRangeSlider extends StatelessWidget {
       required this.unit,});
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<FilterCubit, FilterState, RangeValues?>(
-      selector: (state) => state.rangeValuesMap[filterName],
+    return BlocSelector<FilterCubit, FilterState, String?>(
+      selector: (state) => state.filtersMap[filterName],
       builder: (context, currentRange) {
-        currentRange ??= RangeValues(minValue, maxValue);
+        currentRange ??= '$minValue-$maxValue';
         logger.log(Logger.level, "rebuild triggered $filterName");
         return RangeSlider(
-          values: currentRange,
+          values: getRangeValues(currentRange),
           max: maxValue,
           min: minValue,
+          labels: RangeLabels(currentRange.split('-')[0] + unit,currentRange.split('-')[1] + unit),
+          divisions: 50,
           activeColor: Colors.amber,
           inactiveColor: Colors.grey[300],
           onChanged: (range) =>
-              context.read<FilterCubit>().updateSliderValue(range, filterName),
+              context.read<FilterCubit>().updateSliderValue('${range.start.round()}-${range.end.round()}', filterName),
         );
       },
     );
+  }
+
+  RangeValues getRangeValues(String currentRange) {
+    final rangeValues = currentRange.split('-');
+    return RangeValues(double.parse(rangeValues[0]), double.parse(rangeValues[1]));
   }
 }

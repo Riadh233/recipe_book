@@ -1,10 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
-import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/ui/widgets/filter_range_slider.dart';
 
 import '../../utils/constants.dart';

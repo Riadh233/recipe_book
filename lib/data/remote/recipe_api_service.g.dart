@@ -24,8 +24,7 @@ class _RecipeApiService implements RecipeApiService {
     required String appId,
     String type = 'public',
     String? query,
-    String health_label = 'alcohol-free',
-    String health_label2 = 'pork-free',
+    List<String> health_label = const ['alcohol-free', 'pork-free'],
     required Map<String, dynamic> queryParams,
   }) async {
     final _extra = <String, dynamic>{};
@@ -35,11 +34,9 @@ class _RecipeApiService implements RecipeApiService {
       r'type': type,
       r'q': query,
       r'health': health_label,
-      r'health': health_label2,
     };
     queryParameters.addAll(queryParams);
     queryParameters.removeWhere((k, v) => v == null);
-    logger.log(Logger.level, 'query parameters:${queryParameters}');
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -50,7 +47,7 @@ class _RecipeApiService implements RecipeApiService {
     )
             .compose(
               _dio.options,
-              'https://api.edamam.com/api/recipes/v2',
+              'http://api.edamam.com/api/recipes/v2',
               queryParameters: queryParameters,
               data: _data,
             )

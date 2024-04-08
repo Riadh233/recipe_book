@@ -11,6 +11,8 @@ import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/ui/widgets/recipe_filter.dart';
 
+import '../../utils/constants.dart';
+
 class RecipeSearchBar extends StatelessWidget {
   final SearchController controller = SearchController();
   final FocusNode focusNode = FocusNode();
@@ -49,84 +51,7 @@ class RecipeSearchBar extends StatelessWidget {
                     color: Colors.white,
                     onPressed: () {
                       //open bottom sheet
-                      showModalBottomSheet(
-                        enableDrag: true,
-                        isScrollControlled: true,
-                        context: anchorContext,
-                        builder: (context) {
-                          return Stack(
-                            children: [
-                              const RecipeFilter(),
-                              // Positioned(
-                              //     bottom: 5,
-                              //     left: 0,
-                              //     right: 0,
-                              //     child: Row(
-                              //       mainAxisAlignment:
-                              //       MainAxisAlignment.center,
-                              //       children: [
-                              //         ElevatedButton(
-                              //           onPressed: () {
-                              //             context.read<RecipeFilterCubit>()
-                              //                 .onResetFilters();
-                              //           },
-                              //
-                              //           style: ElevatedButton.styleFrom(
-                              //             backgroundColor: Colors.grey,
-                              //             elevation: 8.0,
-                              //             minimumSize: const Size(130, 40),
-                              //             shape: RoundedRectangleBorder(
-                              //               borderRadius: BorderRadius.circular(
-                              //                   16.0), // Adjust corner radius for roundness
-                              //             ),
-                              //           ),
-                              //           child: Text(
-                              //             'Reset',
-                              //             style: GoogleFonts.outfit(
-                              //                 fontSize: 15,
-                              //                 fontWeight: FontWeight.bold,
-                              //                 color: Colors.white),
-                              //           ),
-                              //         ),
-                              //         const SizedBox(width: 15),
-                              //         ElevatedButton(
-                              //           onPressed: () {
-                              //             // context.read<RecipeFilterCubit>().onApplyFilters();
-                              //             context.pop();
-                              //             context.read<RemoteRecipeBloc>()
-                              //                 .add(GetRecipesEvent(
-                              //                 filters: context
-                              //                     .read<RecipeFilterCubit>()
-                              //                     .state
-                              //                     .filters, query: context
-                              //                 .read<RemoteRecipeBloc>()
-                              //                 .state
-                              //                 .query));
-                              //           },
-                              //           style: ElevatedButton.styleFrom(
-                              //             backgroundColor: Colors.amber,
-                              //             elevation: 8.0,
-                              //             minimumSize: const Size(130, 40),
-                              //             shape: RoundedRectangleBorder(
-                              //               borderRadius: BorderRadius.circular(
-                              //                   16.0), // Adjust corner radius for roundness
-                              //             ),
-                              //           ),
-                              //           child: Text(
-                              //             'Apply',
-                              //             style: GoogleFonts.outfit(
-                              //                 fontSize: 15,
-                              //                 fontWeight: FontWeight.bold,
-                              //                 color: Colors.white),
-                              //           ),
-                              //         ),
-                              //
-                              //       ],
-                              //     ))
-                            ],
-                          );
-                        },
-                      );
+                      openBottomSheet(context);
                     },
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -134,7 +59,7 @@ class RecipeSearchBar extends StatelessWidget {
                       minimumSize: const Size(30, 30),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
-                            14.0), // Adjust corner radius for roundness
+                            14.0),
                       ),
                     ),
                     icon: const Icon(
@@ -148,26 +73,30 @@ class RecipeSearchBar extends StatelessWidget {
           },
           suggestionsBuilder: (BuildContext context, controller) {
             return List<ListTile>.generate(
-                5,
+                SUGGESTION_QUERIES.length,
                     (index) =>
                     ListTile(
-                      title: Text("item $index"),
+                      title: Text(SUGGESTION_QUERIES[index]),
                       onTap: () {
-                        controller.closeView("item $index");
+                        controller.closeView(SUGGESTION_QUERIES[index]);
+                        context.read<RemoteRecipeBloc>()
+                            .add(GetRecipesEvent(
+                            filters: context
+                                .read<FilterCubit>()
+                                .state
+                                .filtersMap, query: SUGGESTION_QUERIES[index]));
                         focusNode.unfocus();
                       },
                     ));
           },
           viewOnSubmitted: (query) {
             if (query.isNotEmpty) {
-              context.read<RemoteRecipeBloc>().add(GetRecipesEvent(
-                  query: query,
-                  filters: {}));
-              // logger.log(
-              //     Logger.level, context
-              //     .read<RecipeFilterCubit>()
-              //     .state
-              //     .filters);
+              context.read<RemoteRecipeBloc>()
+                  .add(GetRecipesEvent(
+                  filters: context
+                      .read<FilterCubit>()
+                      .state
+                      .filtersMap, query: query));
               controller.closeView(query);
               focusNode.unfocus();
             }
@@ -176,44 +105,88 @@ class RecipeSearchBar extends StatelessWidget {
       ),
     );
   }
-}
+  Future<void> openBottomSheet(BuildContext context) async {
+    final result = await showModalBottomSheet(
+        enableDrag: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Stack(
+            children: [
+              const RecipeFilter(),
+              Positioned(
+                  bottom: 5,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<FilterCubit>()
+                              .resetFilters();
+                        },
 
-// class RecipeFilterDraggableSheet extends StatefulWidget {
-//
-//   const RecipeFilterDraggableSheet({super.key});
-//
-//   @override
-//   State<StatefulWidget> createState() => _RecipeFilterDraggableSheetState();
-// }
-//
-// class _RecipeFilterDraggableSheetState
-//     extends State<RecipeFilterDraggableSheet> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return DraggableScrollableSheet(
-//         minChildSize: 0.5,
-//         maxChildSize: 1,
-//         initialChildSize: 0.5,
-//         builder: (BuildContext context, ScrollController scrollController) {
-//           return Container(
-//               decoration: const BoxDecoration(
-//                 borderRadius: BorderRadius.only(
-//                     topLeft: Radius.circular(28.0),
-//                     topRight: Radius.circular(28.0)),
-//                 color: Colors.white,
-//               ),
-//               child: SingleChildScrollView(
-//                 controller: scrollController,
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(10.0),
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       Text('this is the filter sheet')
-//                     ],
-//                   ),
-//                 ),
-//               ));
-//         });
-//   }
-// }
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          elevation: 8.0,
+                          minimumSize: const Size(130, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                16.0), // Adjust corner radius for roundness
+                          ),
+                        ),
+                        child: Text(
+                          'Reset',
+                          style: GoogleFonts.outfit(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<RemoteRecipeBloc>()
+                              .add(GetRecipesEvent(
+                              filters: context
+                                  .read<FilterCubit>()
+                                  .state
+                                  .filtersMap, query: context
+                              .read<RemoteRecipeBloc>()
+                              .state
+                              .query));
+                          context.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          elevation: 8.0,
+                          minimumSize: const Size(130, 40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                16.0),
+                          ),
+                        ),
+                        child: Text(
+                          'Apply',
+                          style: GoogleFonts.outfit(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+
+                    ],
+                  ))
+            ],
+          );
+        },);
+
+    if (result == null) {
+      // Handle the dismissal (e.g., update UI, perform actions)
+      logger.log(Logger.level, 'bottom sheet dismissed');
+    }
+  }
+
+}

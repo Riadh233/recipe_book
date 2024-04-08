@@ -25,6 +25,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
       { required String query,
         required String mealType,
         required String dishType,
+        required String cuisineType,
         required String diet,
         required String calories,
         required String totalTime,}) async {
@@ -32,13 +33,13 @@ class RecipeRepositoryImpl implements RecipeRepository {
       var httpResponse = await recipeService.getRecipes(
           appKey: appKey,
           appId: appId,
-          query: query,
-          queryParams: {'mealType':'Dinner','time':'1-60'});
+          query: query.isEmpty ? null : query,
+          queryParams: getQueryParameters(mealType: mealType, dishType: dishType,cuisineType: cuisineType, diet: diet, calories: calories, totalTime: totalTime));
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final hits = httpResponse.data.hits;
         return DataSuccess(hits!
             .map((apiHits) => Recipe.fromRecipeDto(apiHits.recipeDto))
-            .toList(),httpResponse.data.links?.next.nextPage);
+            .toList(),httpResponse.data.links?.next?.nextPage);
       } else {
         logger.log(Logger.level, "fetch failed");
         return DataFailed(DioException(
@@ -55,6 +56,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Map<String, dynamic> getQueryParameters({
     required String mealType,
     required String dishType,
+    required String cuisineType,
     required String diet,
     required String calories,
     required String totalTime,
@@ -64,7 +66,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
       queryParameters[CALORIES] = calories;
     }
     if (diet.isNotEmpty) {
-      queryParameters[DIET_TYPE] = diet;
+      List<String> dietList = diet.split(',');
+      var lowercaseList = dietList.map((element) => element.toLowerCase()).toList();
+      queryParameters[DIET_TYPE] = lowercaseList;
     }
     if (mealType.isNotEmpty) {
       queryParameters[MEAL_TYPE] = mealType;
@@ -74,6 +78,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
     }
     if (totalTime.isNotEmpty) {
       queryParameters[TOTAL_TIME] = totalTime;
+    }
+    if (cuisineType != 'All') {
+      queryParameters[CUISINE_TYPE] = cuisineType;
     }
 
     return queryParameters;
@@ -105,7 +112,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
         final hits = httpResponse.data.hits;
         return DataSuccess(hits!
             .map((apiHits) => Recipe.fromRecipeDto(apiHits.recipeDto))
-            .toList(),httpResponse.data.links?.next.nextPage);
+            .toList(),httpResponse.data.links?.next?.nextPage);
       } else {
         return DataFailed(DioException(
             requestOptions: httpResponse.response.requestOptions,

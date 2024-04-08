@@ -29,7 +29,7 @@ class RecipeQueryModel {
 
 @JsonSerializable()
 class Links {
-  NextPageLink next;
+  NextPageLink? next;
 
   Links({required this.next});
 

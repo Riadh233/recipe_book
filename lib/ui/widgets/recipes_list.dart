@@ -37,7 +37,7 @@ class _RecipeListState extends State<RecipesList> {
     if (currentScroll >= (maxScroll)) {
       context.read<RemoteRecipeBloc>().add(GetRecipesEvent(
           query: context.read<RemoteRecipeBloc>().state.query,
-          filters: {}));
+          filters: context.read<RemoteRecipeBloc>().state.filters));
     }
   }
 
@@ -51,6 +51,11 @@ class _RecipeListState extends State<RecipesList> {
         );
       }
       if (state.status == RecipeStatus.success) {
+        if(state.recipeList.isEmpty){
+          return const Center(
+            child: Text("no recipes found"),
+          );
+        }
         return GridView.builder(
           padding: const EdgeInsets.all(8),
           itemBuilder: (_, index) {
@@ -70,7 +75,7 @@ class _RecipeListState extends State<RecipesList> {
         );
       }
       if (state.status == RecipeStatus.searching) {
-        _scrollController.jumpTo(0.0);
+        //_scrollController.jumpTo(0.0);
         return const Center(
           child: CircularProgressIndicator(),
         );

@@ -14,7 +14,7 @@ class InputChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<FilterCubit, FilterState,String?>(
-      selector: (state) => state.inputChipsMap[filterName],
+      selector: (state) => state.filtersMap[filterName],
         builder: (BuildContext context, String? selectedChip) {
       return Wrap(
         alignment: WrapAlignment.start,
@@ -73,7 +73,7 @@ class InputChips extends StatelessWidget {
 
   // Method to convert a comma-separated string to a list of strings
   List<String> stringToList(String? input) {
-    if (input == null) return [];
+    if (input == null || input.isEmpty) return [];
     return input.split(',').map((String item) => item.trim()).toList();
   }
 

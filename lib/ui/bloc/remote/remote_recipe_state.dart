@@ -12,7 +12,7 @@ class RemoteRecipeState extends Equatable {
   final String? nextPage;
   final bool hasReachedMax;
   final String query;
-  final Map<String,dynamic> filters;
+  final Map<String,String> filters;
   final DioException? error;
 
   const RemoteRecipeState({
@@ -20,8 +20,8 @@ class RemoteRecipeState extends Equatable {
     this.recipeList = const <Recipe>[],
     this.nextPage,
     this.hasReachedMax = false,
-    this.query = DEFAULT_QUERY,
-    this.filters = const {},
+    this.query = '',
+    this.filters = DEFAULT_FILTERS,
     this.error
   });
 

@@ -8,19 +8,20 @@ import 'package:recipe_app/utils/constants.dart';
 import '../repository/recipe_repository.dart';
 
 class GetRecipesUseCase
-    implements UseCase<DataState<List<Recipe>>, Map<String, dynamic>> {
+    implements UseCase<DataState<List<Recipe>>, Map<String, String>> {
   final RecipeRepository repository;
 
   GetRecipesUseCase({required this.repository});
 
   @override
-  Future<DataState<List<Recipe>>> call({required Map<String, dynamic> params}) {
+  Future<DataState<List<Recipe>>> call({required Map<String, String> params}) {
     return repository.getRecipes(
-        query: params.containsKey('query') ? params['query'] : DEFAULT_QUERY,
-        calories: params.containsKey(CALORIES) ? params[CALORIES] : '',
-        diet: params.containsKey(DIET_TYPE) ? params[DIET_TYPE] : '',
-        mealType: params.containsKey(MEAL_TYPE) ? params[MEAL_TYPE] : '',
-        dishType: params.containsKey(DISH_TYPE) ? params[DISH_TYPE] : '',
-        totalTime:params.containsKey(TOTAL_TIME) ? params[TOTAL_TIME] : '');
+        query: params['query'] ?? '',
+        calories:params[CALORIES] ?? DEFAULT_FILTERS[CALORIES]!,
+        diet:params[DIET_TYPE] ?? DEFAULT_FILTERS[DIET_TYPE]!,
+        mealType:params[MEAL_TYPE] ?? DEFAULT_FILTERS[MEAL_TYPE]!,
+        dishType: params[DISH_TYPE] ?? DEFAULT_FILTERS[DISH_TYPE]!,
+        cuisineType: params[CUISINE_TYPE] ?? DEFAULT_FILTERS[CUISINE_TYPE]!,
+        totalTime:params[TOTAL_TIME] ?? DEFAULT_FILTERS[TOTAL_TIME]!);
   }
 }
