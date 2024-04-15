@@ -1,16 +1,20 @@
-# recipe_app
+# Flutter Recipes App
+This App is designed following a modular and scalable architecture, leveraging key principles to ensure maintainability, flexibility, and a seamless development experience.  
 
-A new Flutter project.
+ <div>
+ <p align="center">
+  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/b79167b2-1967-40c8-831c-57846894df93"height="400" >
+  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/99990294-79ed-4b6b-88e6-30be9e0557ac" height="400" >
+  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/051e4c73-7075-481f-83cb-92211e3173f2" height="400" >
+ <div>
+   
+ ## Features
+ - Search across +10000 diffrent recipes across the world
+ - Filter ricepes
+ - Read recipe details
+ - Share the recipe
 
-## Getting Started
+## Architecture 
+This app uses the Clean Architecture with BLOC, separating the app into Data, Domain, and UI layers, resulting in testable, maintainable, and flexible code. It leverages the power of FLUTTER libraries like Retrofit and Dio for network calls, GetIt for dependency injection.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  
