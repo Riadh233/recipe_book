@@ -37,15 +37,15 @@ class CategoryChips extends StatelessWidget {
                             .read<FilterCubit>()
                             .selectChip(CUISINE_TYPES[index],CUISINE_TYPE);
 
-                        // context.read<RemoteRecipeBloc>()
-                        //     .add(GetRecipesEvent(
-                        //     filters: context
-                        //         .read<FilterCubit>()
-                        //         .state
-                        //         .filtersMap, query: context
-                        //     .read<RemoteRecipeBloc>()
-                        //     .state
-                        //     .query));
+                        context.read<RemoteRecipeBloc>()
+                            .add(GetRecipesEvent(
+                            filters: context
+                                .read<FilterCubit>()
+                                .state
+                                .filtersMap, query: context
+                            .read<RemoteRecipeBloc>()
+                            .state
+                            .query));
                       }
                     },
                     selectedColor: Colors.amberAccent,
