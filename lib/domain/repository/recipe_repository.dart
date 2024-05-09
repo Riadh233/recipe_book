@@ -15,9 +15,9 @@ abstract class RecipeRepository {
   Future<DataState<List<Recipe>>> getNextPageRecipes(
       {required String? nextPageUrl});
 
-  Future<void> saveRecipe(Recipe recipe);
-
-  Future<void> deleteRecipe(Recipe recipe);
-
-  Future<List<Recipe>> getSavedRecipes();
+  // Future<void> saveRecipe(Recipe recipe);
+  //
+  // Future<void> deleteRecipe(Recipe recipe);
+  //
+  // Future<List<Recipe>> getSavedRecipes();
 }

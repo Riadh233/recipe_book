@@ -8,7 +8,8 @@ class GetSavedRecipesUseCase implements UseCase<List<Recipe>,void>{
   GetSavedRecipesUseCase({required this.repository});
 
   @override
-  Future<List<Recipe>> call({void params}) {
-    return repository.getSavedRecipes();
+  Future<List<Recipe>> call({required void params}) {
+    // TODO: implement call
+    throw UnimplementedError();
   }
 }

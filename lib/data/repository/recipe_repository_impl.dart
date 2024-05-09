@@ -86,23 +86,23 @@ class RecipeRepositoryImpl implements RecipeRepository {
     return queryParameters;
   }
 
-  @override
-  Future<void> saveRecipe(Recipe recipe) async {
-    await databaseService.saveRecipe(RecipeEntity.fromRecipe(recipe));
-  }
-
-  @override
-  Future<void> deleteRecipe(Recipe recipe) async {
-    await databaseService.deleteRecipe(recipe.url!);
-  }
-
-  @override
-  Future<List<Recipe>> getSavedRecipes() async {
-    final recipes = await databaseService.getAllRecipes();
-
-    return recipes.map((recipeEntity) => Recipe.fromRecipeEntity(recipeEntity))
-        as List<Recipe>;
-  }
+  // @override
+  // Future<void> saveRecipe(Recipe recipe) async {
+  //   await databaseService.saveRecipe(RecipeEntity.fromRecipe(recipe));
+  // }
+  //
+  // @override
+  // Future<void> deleteRecipe(Recipe recipe) async {
+  //   await databaseService.deleteRecipe(recipe.url!);
+  // }
+  //
+  // @override
+  // Future<List<Recipe>> getSavedRecipes() async {
+  //   final recipes = await databaseService.getAllRecipes();
+  //
+  //   return recipes.map((recipeEntity) => Recipe.fromRecipeEntity(recipeEntity))
+  //       as List<Recipe>;
+  // }
 
   @override
   Future<DataState<List<Recipe>>> getNextPageRecipes({required String? nextPageUrl}) async {

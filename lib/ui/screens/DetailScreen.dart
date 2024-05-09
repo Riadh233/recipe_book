@@ -180,7 +180,7 @@ class _RecipeDetailsDraggableSheetState
                           buildCustomContainer(Icons.access_time, widget.recipe!.getTime()!),
                           buildCustomContainer(Icons.local_fire_department_outlined, widget.recipe!.getCalories()),
                           buildCustomContainer(Icons.line_weight_outlined, widget.recipe!.getWeight()),
-                          buildCustomContainer(Icons.fastfood_outlined, widget.recipe!.getDishType()),
+                          buildCustomContainer(Icons.fastfood_outlined, widget.recipe!.getMealType()),
                         ],
                       ),
                       const SizedBox(height: 15,),

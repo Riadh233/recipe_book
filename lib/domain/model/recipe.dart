@@ -72,12 +72,10 @@ class Recipe {
     return totalWeight == null ? '0 g' : '${totalWeight!.floor()} g';
   }
 
-  String getDishType(){
-    final words = dishType[0].split(' ');
-    if(words.length > 1){
-      return words.join('\n');
-    }
-    return dishType[0];
+  String getMealType(){
+    final words = mealType[0].split('/');
+    if(words.length > 1) return words[1];
+    return words[0];
   }
 
   String? getTime() {

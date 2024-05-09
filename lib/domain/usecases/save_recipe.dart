@@ -9,7 +9,8 @@ class SaveRecipeUseCase implements UseCase<void,Recipe>{
   SaveRecipeUseCase({required this.repository});
 
   @override
-  Future<void> call({Recipe? params}) async {
-    repository.saveRecipe(params!);
+  Future<void> call({required Recipe params}) {
+    // TODO: implement call
+    throw UnimplementedError();
   }
 }

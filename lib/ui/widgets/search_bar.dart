@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
+import 'package:recipe_app/di/app_service.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
@@ -52,6 +53,7 @@ class RecipeSearchBar extends StatelessWidget {
                     onPressed: () {
                       //open bottom sheet
                       openBottomSheet(context);
+
                     },
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -105,81 +107,83 @@ class RecipeSearchBar extends StatelessWidget {
       ),
     );
   }
-  Future<void> openBottomSheet(BuildContext context) async {
+  Future<void> openBottomSheet(BuildContext blocContext) async {
     final result = await showModalBottomSheet(
         enableDrag: true,
         isScrollControlled: true,
-        context: context,
+        context: blocContext,
         builder: (context) {
-          return Stack(
-            children: [
-              const RecipeFilter(),
-              Positioned(
-                  bottom: 5,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<FilterCubit>()
-                              .resetFilters();
-                        },
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
-                          elevation: 8.0,
-                          minimumSize: const Size(130, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                16.0), // Adjust corner radius for roundness
+          return BlocProvider.value(
+            value: BlocProvider.of<FilterCubit>(blocContext),
+            child: Stack(
+                children: [
+                  const RecipeFilter(),
+                  Positioned(
+                      bottom: 5,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              blocContext.read<FilterCubit>()
+                                  .resetFilters();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              elevation: 8.0,
+                              minimumSize: const Size(130, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    16.0), // Adjust corner radius for roundness
+                              ),
+                            ),
+                            child: Text(
+                              'Reset',
+                              style: GoogleFonts.outfit(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Reset',
-                          style: GoogleFonts.outfit(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<RemoteRecipeBloc>()
-                              .add(GetRecipesEvent(
-                              filters: context
-                                  .read<FilterCubit>()
+                          const SizedBox(width: 15),
+                          ElevatedButton(
+                            onPressed: () {
+                              blocContext.read<RemoteRecipeBloc>()
+                                  .add(GetRecipesEvent(
+                                  filters: blocContext
+                                      .read<FilterCubit>()
+                                      .state
+                                      .filtersMap, query: blocContext
+                                  .read<RemoteRecipeBloc>()
                                   .state
-                                  .filtersMap, query: context
-                              .read<RemoteRecipeBloc>()
-                              .state
-                              .query));
-                          context.pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          elevation: 8.0,
-                          minimumSize: const Size(130, 40),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                16.0),
+                                  .query));
+                              context.pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber,
+                              elevation: 8.0,
+                              minimumSize: const Size(130, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    16.0),
+                              ),
+                            ),
+                            child: Text(
+                              'Apply',
+                              style: GoogleFonts.outfit(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Apply',
-                          style: GoogleFonts.outfit(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
 
-                    ],
-                  ))
-            ],
+                        ],
+                      ))
+                ],
+            ),
           );
         },);
 
