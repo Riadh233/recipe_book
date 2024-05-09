@@ -13,6 +13,7 @@ This App is designed following a modular and scalable architecture, leveraging k
   <div>
    
  ## Features
+ - User authantication (Firebase)
  - Search across +10000 diffrent recipes across the world
  - Filter ricepes
  - Read recipe details
