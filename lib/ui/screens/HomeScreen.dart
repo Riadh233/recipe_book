@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:recipe_app/ui/bloc/auth_bloc/athentication_bloc.dart';
-import 'package:recipe_app/ui/bloc/auth_bloc/authentication_event.dart';
 import 'package:recipe_app/ui/bloc/bottom_nav_cubit/bottom_nav_cubit.dart';
 import 'package:recipe_app/ui/bloc/bottom_nav_cubit/bottom_nav_state.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
@@ -13,14 +9,10 @@ import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 import 'package:recipe_app/ui/screens/bookmark_screen.dart';
 import 'package:recipe_app/ui/screens/discover_recipes_screen.dart';
 import 'package:recipe_app/ui/screens/profile_screen.dart';
-import 'package:recipe_app/ui/widgets/home_header.dart';
-import 'package:recipe_app/ui/widgets/recipes_list.dart';
-
 import '../../di/app_service.dart';
 import '../../utils/constants.dart';
 import '../bloc/remote/remote_recipe_event.dart';
-import '../widgets/CategoryChips.dart';
-import '../widgets/search_bar.dart';
+
 
 final logger = Logger();
 
@@ -68,7 +60,6 @@ class _HomeScreen extends StatelessWidget {
               ],
               currentIndex: selectedTab,
               onTap: (index){
-                logger.log(Logger.level, 'selected tab $index');
                 context.read<BottomNavCubit>().selectedTabChanged(index);
               },
             )

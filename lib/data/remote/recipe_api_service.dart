@@ -1,7 +1,5 @@
-import 'package:logger/logger.dart';
 import 'package:recipe_app/data/remote/recipe_query_model.dart';
 import 'package:dio/dio.dart';
-import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'recipe_api_service.g.dart';

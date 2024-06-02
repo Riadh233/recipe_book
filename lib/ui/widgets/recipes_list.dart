@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_state.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
-import 'package:recipe_app/utils/constants.dart';
 import 'RecipeItem.dart';
 import 'bottom_loader.dart';
 
@@ -63,7 +62,6 @@ class _RecipeListState extends State<RecipesList> {
                 ? const BottomLoader()
                 : RecipeItem(
                     recipe: state.recipeList[index],
-                    onItemTaped: (item) {},
                   );
           },
           itemCount: state.hasReachedMax

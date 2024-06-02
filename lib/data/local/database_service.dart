@@ -1,5 +1,4 @@
 import 'package:recipe_app/data/auth/user.dart';
-import 'package:recipe_app/data/local/recipe_entity.dart';
 import 'package:hive/hive.dart';
 
 class DatabaseService{

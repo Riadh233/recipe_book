@@ -58,22 +58,16 @@ class AppRouter {
       redirect: (context,state){
         logger.log(Logger.level, isAuth);
         if (!isAuth) {
-          // Unauthenticated user:
           if (state.matchedLocation == '/home') {
-            // Redirect from details route(s) to login:
             return '/login';
           } else {
-            // Allow access to other routes (home, signup, etc.)
-            return null; // No redirection
+            return null;
           }
         } else {
-          // Authenticated user:
           if (state.matchedLocation == '/login' || state.matchedLocation == '/signup') {
-            // Redirect from login/signup to home:
             return '/home';
           } else {
-            // Allow access to all routes
-            return null; // No redirection
+            return null;
           }
         }
       }

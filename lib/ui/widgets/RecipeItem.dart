@@ -14,10 +14,9 @@ import 'package:recipe_app/utils/app_routes.dart';
 
 class RecipeItem extends StatelessWidget {
   final Recipe recipe;
-  final void Function(Recipe recipe) onItemTaped;
 
   const RecipeItem(
-      {super.key, required this.recipe, required this.onItemTaped});
+      {super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,6 @@ class RecipeItem extends StatelessWidget {
         GestureDetector(
           onTap: (){
             context.pushNamed(AppRoutes.Details,extra: recipe);
-            logger.log(Logger.level, 'item clicked');
             },
           child: Card(
             shape:
