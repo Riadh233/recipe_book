@@ -15,6 +15,8 @@ abstract class RecipeRepository {
   Future<DataState<List<Recipe>>> getNextPageRecipes(
       {required String? nextPageUrl});
 
+  Future<void> saveAppTheme(bool isDarkTheme);
+  Future<bool> getAppTheme();
   // Future<void> saveRecipe(Recipe recipe);
   //
   // Future<void> deleteRecipe(Recipe recipe);

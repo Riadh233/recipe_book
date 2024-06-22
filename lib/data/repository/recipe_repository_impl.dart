@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/constants.dart';
 import 'package:recipe_app/utils/data_state.dart';
-import 'package:recipe_app/data/local/recipe_entity.dart';
+import 'package:recipe_app/data/firestore/firestore_recipe.dart';
 import 'package:recipe_app/data/remote/recipe_api_service.dart';
 import '../../domain/model/recipe.dart';
 import '../../domain/repository/recipe_repository.dart';
@@ -119,5 +119,14 @@ class RecipeRepositoryImpl implements RecipeRepository {
     } on DioException catch (e) {
       return DataFailed(e);
     }
+  }
+  @override
+  Future<void> saveAppTheme(bool isDarkTheme) async{
+    await databaseService.saveAppTheme(isDarkTheme);
+  }
+
+  @override
+  Future<bool> getAppTheme() async {
+    return await databaseService.getAppTheme();
   }
 }

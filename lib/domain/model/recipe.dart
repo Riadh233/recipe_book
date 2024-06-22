@@ -1,4 +1,6 @@
-import '../../data/local/recipe_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../data/firestore/firestore_recipe.dart';
 import '../../data/remote/recipe_query_model.dart';
 
 class Recipe {
@@ -16,30 +18,30 @@ class Recipe {
   double? totalWeight;
   double? totalTime;
 
-  Recipe({
-    required this.label,
-    required this.image,
-    required this.url,
-    required this.ingredients,
-    required this.calories,
-    required this.totalWeight,
-    required this.totalTime,
-    required this.dietLabels,
-    required this.mealType,
-    required this.dishType,
-    required this.ingredientLines,
-    required this.totalNutrients,
-    required this.cuisineType
-  });
+  Recipe(
+      {required this.label,
+      required this.image,
+      required this.url,
+      required this.ingredients,
+      required this.calories,
+      required this.totalWeight,
+      required this.totalTime,
+      required this.dietLabels,
+      required this.mealType,
+      required this.dishType,
+      required this.ingredientLines,
+      required this.totalNutrients,
+      required this.cuisineType});
 
   factory Recipe.fromRecipeDto(RecipeDto recipeDto) {
-    return Recipe(label: recipeDto.label,
+    return Recipe(
+        label: recipeDto.label,
         image: recipeDto.image,
         url: recipeDto.url,
         ingredients: recipeDto.ingredients ?? [],
         calories: recipeDto.calories,
         totalWeight: recipeDto.totalWeight,
-        cuisineType:recipeDto.cuisineType ?? [],
+        cuisineType: recipeDto.cuisineType ?? [],
         totalTime: recipeDto.totalTime,
         dietLabels: recipeDto.dietLabels ?? [],
         dishType: recipeDto.dishType ?? [],
@@ -48,8 +50,9 @@ class Recipe {
         ingredientLines: recipeDto.ingredientLines ?? []);
   }
 
-  factory Recipe.fromRecipeEntity(RecipeEntity recipeEntity) {
-    return Recipe(label:recipeEntity.label,
+  factory Recipe.fromFirestoreRecipe(FirestoreRecipe recipeEntity) {
+    return Recipe(
+        label: recipeEntity.label,
         image: recipeEntity.image,
         url: recipeEntity.url,
         ingredients: recipeEntity.ingredients,
@@ -72,9 +75,9 @@ class Recipe {
     return totalWeight == null ? '0 g' : '${totalWeight!.floor()} g';
   }
 
-  String getMealType(){
+  String getMealType() {
     final words = mealType[0].split('/');
-    if(words.length > 1) return words[1];
+    if (words.length > 1) return words[1];
     return words[0];
   }
 

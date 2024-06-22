@@ -25,6 +25,8 @@ class RecipeQueryModel {
 
   factory RecipeQueryModel.fromJson(Map<String, dynamic> json) =>
       _$RecipeQueryModelFromJson(json);
+
+  Map<String,dynamic> toJson() => _$RecipeQueryModelToJson(this);
 }
 
 @JsonSerializable()
@@ -34,6 +36,8 @@ class Links {
   Links({required this.next});
 
   factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
+  Map<String,dynamic> toJson() => _$LinksToJson(this);
+
 }
 
 @JsonSerializable()
@@ -45,6 +49,8 @@ class NextPageLink {
 
   factory NextPageLink.fromJson(Map<String, dynamic> json) =>
       _$NextPageLinkFromJson(json);
+
+  Map<String,dynamic> toJson() => _$NextPageLinkToJson(this);
 }
 
 @JsonSerializable()
@@ -56,6 +62,8 @@ class ApiHits {
 
   factory ApiHits.fromJson(Map<String, dynamic> json) =>
       _$ApiHitsFromJson(json);
+
+  Map<String,dynamic> toJson() => _$ApiHitsToJson(this);
 }
 
 @JsonSerializable()
@@ -92,6 +100,8 @@ class RecipeDto {
   factory RecipeDto.fromJson(Map<String, dynamic> json) =>
       _$RecipeDtoFromJson(json);
 
+  Map<String,dynamic> toJson() => _$RecipeDtoToJson(this);
+
   List<String> getNutrients() {
     return [
       '${totalNutrients.ENERC_KCAL.label}: ${totalNutrients.ENERC_KCAL.quantity.round()} ${totalNutrients.ENERC_KCAL.unit}',
@@ -115,6 +125,8 @@ class RecipeImage {
 
   factory RecipeImage.fromJson(Map<String, dynamic> json) =>
       _$RecipeImageFromJson(json);
+
+  Map<String,dynamic> toJson() => _$RecipeImageToJson(this);
 }
 
 @JsonSerializable()
@@ -125,6 +137,8 @@ class ApiImage {
 
   factory ApiImage.fromJson(Map<String, dynamic> json) =>
       _$ApiImageFromJson(json);
+
+  Map<String,dynamic> toJson() => _$ApiImageToJson(this);
 }
 
 @JsonSerializable()
@@ -154,6 +168,8 @@ class TotalNutrients {
   factory TotalNutrients.fromJson(Map<String, dynamic> json) =>
       _$TotalNutrientsFromJson(json);
 
+  Map<String,dynamic> toJson() => _$TotalNutrientsToJson(this);
+
   TotalNutrients(
       {required this.ENERC_KCAL, required this.FAT, required this.PROCNT, required this.SUGAR, required this.FIBTG, required this.CHOCDF,});
 }
@@ -168,4 +184,6 @@ class Nutrient {
 
   factory Nutrient.fromJson(Map<String, dynamic> json) =>
       _$NutrientFromJson(json);
+
+  Map<String,dynamic> toJson() => _$NutrientToJson(this);
 }

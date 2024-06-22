@@ -151,8 +151,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  AuthenticationRepositoryImpl({required DatabaseService cache, firebase_auth
-      .FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
+  AuthenticationRepositoryImpl({required DatabaseService cache, firebase_auth.FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
       : _cache = cache,
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
@@ -238,7 +237,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<void> resetPassword({required String email}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-      //await _firebaseAuth.confirmPasswordReset(code:confirmationCode,newPassword: newPassword);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw ResetPasswordException(e.code);
     } catch (_) {

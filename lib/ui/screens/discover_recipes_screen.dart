@@ -15,10 +15,6 @@ class DiscoverRecipesScreen extends StatelessWidget{
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          IconButton(onPressed: (){
-            context.read<AuthenticationBloc>().add(const AppLogoutRequested());
-          }, icon: const Icon(Icons.logout)),
-          //const HomeHeader(),
           const SizedBox(
             height: 10,
           ),

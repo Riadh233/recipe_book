@@ -4,10 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:recipe_app/domain/model/recipe.dart';
+import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
+import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/app_router.dart';
 import 'package:recipe_app/utils/app_routes.dart';
@@ -72,6 +75,7 @@ class RecipeItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap: (){
                       //bookmark the recipe
+                      context.read<FirestoreBloc>().add(BookmarkRecipeEvent(recipe));
                     },
                     child: Container(
                         padding: const EdgeInsets.all(4),

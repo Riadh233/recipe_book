@@ -1,7 +1,12 @@
-import '../../data/remote/recipe_query_model.dart';
-import '../../domain/model/recipe.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class RecipeEntity {
+import '../remote/recipe_query_model.dart';
+import '../../domain/model/recipe.dart';
+part 'firestore_recipe.g.dart';
+
+@JsonSerializable()
+class FirestoreRecipe {
   String? label;
   RecipeImage? image;
   String? url;
@@ -16,7 +21,7 @@ class RecipeEntity {
   double? totalWeight;
   double? totalTime;
 
-  RecipeEntity({
+  FirestoreRecipe({
     required this.label,
     required this.image,
     required this.url,
@@ -31,8 +36,8 @@ class RecipeEntity {
     required this.ingredientLines,
   });
 
-  factory RecipeEntity.fromRecipeDto(RecipeDto recipeDto){
-    return RecipeEntity(
+  factory FirestoreRecipe.fromRecipeDto(RecipeDto recipeDto){
+    return FirestoreRecipe(
         label: recipeDto.label,
         image: recipeDto.image,
         url: recipeDto.url,
@@ -47,8 +52,8 @@ class RecipeEntity {
         ingredientLines: recipeDto.ingredientLines ?? []);
   }
 
-  factory RecipeEntity.fromRecipe(Recipe recipe){
-    return RecipeEntity(
+  factory FirestoreRecipe.fromRecipe(Recipe recipe){
+    return FirestoreRecipe(
         label:recipe.label,
         image: recipe.image,
         url: recipe.url,
@@ -63,4 +68,17 @@ class RecipeEntity {
         ingredientLines: recipe.ingredientLines
     );
   }
+
+  factory FirestoreRecipe._fromJson(Map<String, dynamic> json) => _$FirestoreRecipeFromJson(json);
+
+  Map<String, dynamic> _toJson() => _$FirestoreRecipeToJson(this);
+
+  factory FirestoreRecipe.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      ) {
+    final data = snapshot.data();
+    return FirestoreRecipe._fromJson(data ?? {});
+  }
+
+  Map<String, dynamic> toFirestore() => _toJson();
 }

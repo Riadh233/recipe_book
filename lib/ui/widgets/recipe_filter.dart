@@ -43,7 +43,7 @@ class RecipeFilter extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -60,7 +60,7 @@ class RecipeFilter extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -80,7 +80,7 @@ class RecipeFilter extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -95,7 +95,7 @@ class RecipeFilter extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -110,7 +110,7 @@ class RecipeFilter extends StatelessWidget {
                     style: GoogleFonts.outfit(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black)),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),

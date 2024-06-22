@@ -4,4 +4,5 @@ class AppRoutes{
   static const Login ='login';
   static const SignUp ='signup';
   static const ResetPassword ='reset_password';
+  static const Bookmark ='bookmark';
 }

@@ -4,7 +4,6 @@ import 'package:logger/logger.dart';
 import 'package:recipe_app/data/repository/auth_repository_impl.dart';
 import 'package:recipe_app/domain/repository/auth_repository.dart';
 import 'package:recipe_app/ui/bloc/login_cubit/login_state.dart';
-import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/form_inputs/email.dart';
 import 'package:recipe_app/utils/form_inputs/password.dart';
 

@@ -7,6 +7,7 @@ const String DIET_TYPE = 'diet';
 const String CALORIES = 'calories';
 const String TOTAL_TIME = 'time';
 const List<String> SUGGESTION_QUERIES= ['chicken','meat','fish','cake','bread','pasta','orange juice'];
+const APP_THEME_KEY = 'app_theme_key';
 const Map<String, String> DEFAULT_FILTERS = {
   CALORIES: '0-10000',
   TOTAL_TIME: '0-300',
