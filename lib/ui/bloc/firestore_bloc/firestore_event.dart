@@ -11,6 +11,15 @@ class BookmarkRecipeEvent extends FirestoreEvent{
 class GetBookmarkedRecipesEvent extends FirestoreEvent{
   GetBookmarkedRecipesEvent();
 }
+class UnbookmarkRecipeEvent extends FirestoreEvent{
+  final Recipe recipe;
+
+  UnbookmarkRecipeEvent({required this.recipe});
+}
+class DeleteAllBookmarksEvent extends FirestoreEvent{
+  const DeleteAllBookmarksEvent();
+}
 class AppStartedEvent extends FirestoreEvent{
   const AppStartedEvent();
 }
+

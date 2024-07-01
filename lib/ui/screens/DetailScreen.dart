@@ -2,11 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logger/logger.dart';
+import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_cubit.dart';
+import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_state.dart';
+import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
+import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
+import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../domain/model/recipe.dart';
+import '../bloc/firestore_bloc/firestore_state.dart';
 
 class DetailScreen extends StatelessWidget {
   final Recipe? recipe;
@@ -15,9 +23,10 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       child: Container(
-        color: Colors.white,
+        color: theme.colorScheme.background,
         child: Stack(
           children: [
             CachedNetworkImage(
@@ -31,7 +40,7 @@ class DetailScreen extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.fill),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 context.pop();
               },
               child: const Padding(
@@ -43,27 +52,26 @@ class DetailScreen extends StatelessWidget {
                     Icons.arrow_back_ios_new_rounded,
                     color: Colors.black,
                   ),
-
                 ),
               ),
             ),
             Positioned(
-                top: 5,
-                right: 5,
-                child: GestureDetector(
-                  onTap: () async{
-                    Share.shareUri(Uri.parse(recipe!.url!));
-                  },
-                  child: const CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.amberAccent,
-                    child: Icon(
-                      Icons.share,
-                      color: Colors.black,
-                    ),
+              top: 5,
+              right: 5,
+              child: GestureDetector(
+                onTap: () async {
+                  Share.shareUri(Uri.parse(recipe!.url!));
+                },
+                child: const CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.amberAccent,
+                  child: Icon(
+                    Icons.share,
+                    color: Colors.black,
                   ),
                 ),
               ),
+            ),
             RecipeDetailsDraggableSheet(recipe: recipe)
           ],
         ),
@@ -85,17 +93,18 @@ class _RecipeDetailsDraggableSheetState
     extends State<RecipeDetailsDraggableSheet> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DraggableScrollableSheet(
         minChildSize: 0.6,
         maxChildSize: 1,
         initialChildSize: 0.6,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration:  BoxDecoration(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(28.0),
                     topRight: Radius.circular(28.0)),
-                color: Colors.white,
+                color: theme.colorScheme.background
               ),
               child: SingleChildScrollView(
                 controller: scrollController,
@@ -131,10 +140,7 @@ class _RecipeDetailsDraggableSheetState
                                         widget.recipe?.label ??
                                             'Crepes with Oranges and Ice',
                                         maxLines: null,
-                                        style: GoogleFonts.outfit(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black)),
+                                        style: theme.textTheme.headlineMedium),
                                   ),
                                   Material(
                                     child: Text(
@@ -152,85 +158,118 @@ class _RecipeDetailsDraggableSheetState
                             Positioned(
                               top: 5.0,
                               right: 5.0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  //bookmark the recipe
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.amberAccent),
-                                    child: const Icon(
-                                      Icons.bookmark_border,
-                                      color: Colors.black,
-                                      size: 40,
-                                    )),
-                              ),
+                              child: BlocBuilder<BookmarkCubit, BookmarkState>(
+                                  builder: (context, state) {
+                                if (state.status == BookmarkStatus.initial) {
+                                  return const CircularProgressIndicator();
+                                } else {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      //bookmark the recipe
+                                      logger.log(Logger.level,
+                                          'from details .................:${state.isBookmarked}');
+                                      if (state.isBookmarked) {
+                                        context.read<FirestoreBloc>().add(
+                                            UnbookmarkRecipeEvent(
+                                                recipe: widget.recipe!));
+                                        context
+                                            .read<BookmarkCubit>()
+                                            .unbookmarked();
+                                      } else {
+                                        context.read<FirestoreBloc>().add(
+                                            BookmarkRecipeEvent(
+                                                widget.recipe!));
+                                        context
+                                            .read<BookmarkCubit>()
+                                            .bookmarked();
+                                      }
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.amberAccent),
+                                        child: Icon(
+                                          state.isBookmarked
+                                              ? Icons.bookmark
+                                              : Icons.bookmark_outline,
+                                          size: 40,
+                                        )),
+                                  );
+                                }
+                              }),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 15,),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          if( widget.recipe?.getTime() != null)
-                          buildCustomContainer(Icons.access_time, widget.recipe!.getTime()!),
-                          buildCustomContainer(Icons.local_fire_department_outlined, widget.recipe!.getCalories()),
-                          buildCustomContainer(Icons.line_weight_outlined, widget.recipe!.getWeight()),
-                          buildCustomContainer(Icons.fastfood_outlined, widget.recipe!.getMealType()),
+                          if (widget.recipe?.getTime() != null)
+                            buildCustomContainer(
+                                Icons.access_time, widget.recipe!.getTime()!,theme),
+                          buildCustomContainer(
+                              Icons.local_fire_department_outlined,
+                              widget.recipe!.getCalories(),theme),
+                          buildCustomContainer(Icons.line_weight_outlined,
+                              widget.recipe!.getWeight(),theme),
+                          buildCustomContainer(Icons.fastfood_outlined,
+                              widget.recipe!.getMealType(),theme),
                         ],
                       ),
-                      const SizedBox(height: 15,),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Material(
-                        child: Text(
-                            'Ingredients',
+                        child: Text('Ingredients',
                             style: GoogleFonts.outfit(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black)),
                       ),
-                      for(String ingredient in widget.recipe!.ingredientLines)
-                        customRow(ingredient)
-                      ,
-                      const SizedBox(height: 15,),
+                      for (String ingredient in widget.recipe!.ingredientLines)
+                        customRow(ingredient,theme),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Material(
-                        child: Text(
-                            'Nutrients',
+                        child: Text('Nutrients',
                             style: GoogleFonts.outfit(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black)),
                       ),
-                      for(String nutrient in widget.recipe!.totalNutrients)
-                        customRow(nutrient)
+                      for (String nutrient in widget.recipe!.totalNutrients)
+                        customRow(nutrient,theme)
                     ],
                   ),
                 ),
               ));
         });
   }
- Widget buildCustomContainer(IconData icon,String text ){
+
+  Widget buildCustomContainer(IconData icon, String text,ThemeData theme) {
     return Container(
       height: 120,
       width: 80,
       decoration: const BoxDecoration(
           color: Colors.amberAccent,
           borderRadius: BorderRadius.vertical(
-              top: Radius.circular(50),
-              bottom: Radius.circular(50))),
+              top: Radius.circular(50), bottom: Radius.circular(50))),
       child: Padding(
-        padding: const EdgeInsets.only(top:4.0),
+        padding: const EdgeInsets.only(top: 4.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
-              backgroundColor: Colors.white,
+              backgroundColor: theme.colorScheme.background,
               radius: 30,
               child: Icon(
                 icon,
-                color: Colors.black,
+                color: theme.colorScheme.onBackground,
                 size: 35,
               ),
             ),
@@ -245,7 +284,8 @@ class _RecipeDetailsDraggableSheetState
                   maxLines: 2,
                   style: GoogleFonts.outfit(
                       fontWeight: FontWeight.bold,
-                      fontSize: 13, color: Colors.black),
+                      fontSize: 13,
+                      color: Colors.black),
                 ),
               ),
             )
@@ -254,7 +294,8 @@ class _RecipeDetailsDraggableSheetState
       ),
     );
   }
-  Widget customRow(String ingredient){
+
+  Widget customRow(String ingredient,ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -268,14 +309,17 @@ class _RecipeDetailsDraggableSheetState
               backgroundColor: Colors.amber,
             ),
           ),
-          const SizedBox(width: 5,),
+          const SizedBox(
+            width: 5,
+          ),
           Expanded(
             child: Material(
               child: Text(
                 ingredient,
                 style: GoogleFonts.outfit(
                     fontWeight: FontWeight.bold,
-                    fontSize: 13, color: Colors.black),
+                    fontSize: 13,
+                    color: theme.colorScheme.onBackground),
               ),
             ),
           ),
@@ -283,5 +327,4 @@ class _RecipeDetailsDraggableSheetState
       ),
     );
   }
-
 }

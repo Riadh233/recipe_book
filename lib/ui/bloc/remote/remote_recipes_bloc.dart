@@ -1,29 +1,33 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:recipe_app/domain/usecases/get_bookmarked_recipes.dart';
 import 'package:recipe_app/domain/usecases/get_next_page_recipes.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipe_state.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/data_state.dart';
+import '../../../domain/model/recipe.dart';
 import '../../../domain/usecases/get_recipes.dart';
 
 class RemoteRecipeBloc extends Bloc<RemoteRecipeEvent, RemoteRecipeState> {
-  final GetRecipesUseCase _getRecipesUseCase;
-  final GetNextPageRecipesUseCase _getNextPageRecipesUseCase;
+  final GetRecipesUseCase _getRecipes;
+  final GetNextPageRecipesUseCase _getNextPageRecipes;
 
-  RemoteRecipeBloc(this._getRecipesUseCase, this._getNextPageRecipesUseCase) : super(const RemoteRecipeState()) {
+  RemoteRecipeBloc(this._getRecipes, this._getNextPageRecipes) : super(const RemoteRecipeState()) {
     on<GetRecipesEvent>(onGetRecipes);
   }
 
   void onGetRecipes(
       GetRecipesEvent event, Emitter<RemoteRecipeState> emit) async {
     if (state.status == RecipeStatus.initial) {
-      final dataState = await _getRecipesUseCase(params: {'query': event.query});
+      //initial fetch
+      final dataState = await _getRecipes(params: {'query': event.query});
       if (dataState is DataSuccess) {
+        var recipeList = dataState.data ?? [];
         emit(RemoteRecipeState(
             status: RecipeStatus.success,
-            recipeList: dataState.data ?? [], // Handle null data
+            recipeList: recipeList, // Handle null data
             nextPage: dataState.nextPageUrl,
             query: event.query,
             filters: event.filters,
@@ -34,7 +38,8 @@ class RemoteRecipeBloc extends Bloc<RemoteRecipeEvent, RemoteRecipeState> {
     }
 
     if (state.query != event.query || !mapEquals(state.filters, event.filters)) {
-      final dataState = await _getRecipesUseCase(params: Map.of(event.filters)..['query'] = event.query);
+      //searching by query and by filter
+      final dataState = await _getRecipes(params: Map.of(event.filters)..['query'] = event.query);
       emit(RemoteRecipeState(
           status: RecipeStatus.searching,
           recipeList: state.recipeList,
@@ -43,12 +48,12 @@ class RemoteRecipeBloc extends Bloc<RemoteRecipeEvent, RemoteRecipeState> {
           filters: event.filters,
           hasReachedMax: (dataState.data?.isNotEmpty ?? false) && dataState.nextPageUrl == null)); // Handle null data
       await Future.delayed(const Duration(seconds: 1));
-      logger.log(Logger.level, 'event filters:${event.filters}');
 
       if (dataState is DataSuccess) {
+        var recipeList = dataState.data ?? [];
         emit(RemoteRecipeState(
             status: RecipeStatus.success,
-            recipeList: dataState.data ?? [], // Handle null data
+            recipeList: recipeList,
             nextPage: dataState.nextPageUrl,
             query: event.query,
             filters: event.filters,
@@ -59,12 +64,13 @@ class RemoteRecipeBloc extends Bloc<RemoteRecipeEvent, RemoteRecipeState> {
     }
 
     if (state.hasReachedMax) return;
-    final dataState = await _getNextPageRecipesUseCase(params: state.nextPage!);
-    logger.log(Logger.level, 'next page are identical:${state.nextPage == dataState.nextPageUrl}');
+    final dataState = await _getNextPageRecipes(params: state.nextPage!);
     if (dataState is DataSuccess) {
+      //fetch next page(next 30 items) when scrolling
+      var recipeList = dataState.data ?? [];
       emit(RemoteRecipeState(
           status: RecipeStatus.success,
-          recipeList: List.of(state.recipeList)..addAll(dataState.data ?? []), // Handle null data
+          recipeList: List.of(state.recipeList)..addAll(recipeList), // Handle null data
           nextPage: dataState.nextPageUrl,
           query: event.query,
           filters: event.filters,

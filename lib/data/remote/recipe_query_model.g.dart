@@ -110,9 +110,9 @@ RecipeImage _$RecipeImageFromJson(Map<String, dynamic> json) => RecipeImage(
 
 Map<String, dynamic> _$RecipeImageToJson(RecipeImage instance) =>
     <String, dynamic>{
-      'THUMBNAIL': instance.THUMBNAIL,
-      'SMALL': instance.SMALL,
-      'REGULAR': instance.REGULAR,
+      'THUMBNAIL': instance.THUMBNAIL.toJson(),
+      'SMALL': instance.SMALL.toJson(),
+      'REGULAR': instance.REGULAR.toJson(),
     };
 
 ApiImage _$ApiImageFromJson(Map<String, dynamic> json) => ApiImage(

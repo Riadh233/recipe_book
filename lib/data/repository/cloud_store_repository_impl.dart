@@ -46,17 +46,49 @@ class CloudStoreRepositoryImpl implements CloudStoreRepository {
     try {
       final currentUser = await _cache.getCurrentUser();
       if (currentUser == User.empty) return;
-      final userDoc = _fireStoreInstance.collection('users').doc(
-          currentUser.id);
+      final userDoc = _fireStoreInstance.collection('users').doc(currentUser.id);
+      final recipesSubCollection = userDoc.collection('recipes');
+      final querySnapshot = await recipesSubCollection
+          .where('url', isEqualTo: recipe.url)
+          .get();
+      WriteBatch batch = _fireStoreInstance.batch();
+      for (var doc in querySnapshot.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<void> deleteAllBookmarkedRecipes() async {
+    try {
+      final currentUser = await _cache.getCurrentUser();
+      if (currentUser == User.empty) return;
+      final userDoc = _fireStoreInstance.collection('users').doc(currentUser.id);
       final recipesSubCollection = userDoc.collection('recipes');
       final querySnapshot = await recipesSubCollection.get();
+      WriteBatch batch = _fireStoreInstance.batch();
       for (var doc in querySnapshot.docs) {
-        final firestoreRecipe = FirestoreRecipe.fromFirestore(doc);
-        if (firestoreRecipe == FirestoreRecipe.fromRecipe(recipe)) {
-          await recipesSubCollection.doc(doc.id).delete();
-          break;
-        }
+        batch.delete(doc.reference);
       }
+      await batch.commit();
+    } on Exception catch (e) {
+      rethrow;
+    }
+  }
+  @override
+  Future<bool> isRecipeBookmarked(Recipe recipe) async {
+    try {
+      final currentUser = await _cache.getCurrentUser();
+      if (currentUser == User.empty) return false;
+      final userDoc = _fireStoreInstance.collection('users').doc(currentUser.id);
+      final recipesSubCollection = userDoc.collection('recipes');
+      final querySnapshot = await recipesSubCollection
+          .where('url', isEqualTo: recipe.url)
+          .get();
+
+      return querySnapshot.docs.isNotEmpty;
     } on Exception catch (e) {
       rethrow;
     }

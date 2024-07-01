@@ -9,10 +9,13 @@ part of 'firestore_recipe.dart';
 FirestoreRecipe _$FirestoreRecipeFromJson(Map<String, dynamic> json) =>
     FirestoreRecipe(
       label: json['label'] as String?,
-      image: null,
+      image: RecipeImage.fromJson(json['image'] as Map<String, dynamic>),
       url: json['url'] as String?,
-      ingredients: [],
+      ingredients: (json['ingredients'] as List<dynamic>)
+          .map((m) => APIIngredients.fromJson(m))
+          .toList(),
       calories: (json['calories'] as num?)?.toDouble(),
+      cuisineType:(json['cuisineType'] as List<dynamic>).map((e) => e as String).toList() ,
       totalWeight: (json['totalWeight'] as num?)?.toDouble(),
       totalTime: (json['totalTime'] as num?)?.toDouble(),
       dietLabels: (json['dietLabels'] as List<dynamic>)
@@ -28,20 +31,19 @@ FirestoreRecipe _$FirestoreRecipeFromJson(Map<String, dynamic> json) =>
       ingredientLines: (json['ingredientLines'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-    )..cuisineType =
-        (json['cuisineType'] as List<dynamic>).map((e) => e as String).toList();
+    );
 
 Map<String, dynamic> _$FirestoreRecipeToJson(FirestoreRecipe instance) =>
     <String, dynamic>{
       'label': instance.label,
-      'image': null,
+      'image': instance.image?.toJson(),
       'url': instance.url,
       'cuisineType': instance.cuisineType,
       'dietLabels': instance.dietLabels,
       'mealType': instance.mealType,
       'ingredientLines': instance.ingredientLines,
       'dishType': instance.dishType,
-      'ingredients': null,
+      'ingredients': instance.ingredients.map((apiIng) => apiIng.toJson()),
       'totalNutrients': instance.totalNutrients,
       'calories': instance.calories,
       'totalWeight': instance.totalWeight,

@@ -13,9 +13,11 @@ import 'package:recipe_app/ui/bloc/app_theme_bloc/app_theme_event.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/athentication_bloc.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/athentication_state.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/authentication_event.dart';
+import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_cubit.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/bloc/my_bloc_observer.dart';
+import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 import 'package:recipe_app/utils/app_router.dart';
 import 'di/app_service.dart';
 
@@ -37,12 +39,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<RemoteRecipeBloc>(
+            create: (context) => getIt()),
         BlocProvider<AuthenticationBloc>(
             create: (context) => getIt()..add(const AppStarted())),
         BlocProvider<AppThemeBloc>(
             create: (context) => getIt()..add(const AppThemeStarted())),
         BlocProvider<FirestoreBloc>(
-            create: (context) => getIt()..add(GetBookmarkedRecipesEvent()))
+            create: (context) => getIt()..add(GetBookmarkedRecipesEvent())),
+        BlocProvider<BookmarkCubit>(
+            create: (context) => getIt())
       ],
       child: Builder(builder: (context) {
         final authState = context.watch<AuthenticationBloc>().state;

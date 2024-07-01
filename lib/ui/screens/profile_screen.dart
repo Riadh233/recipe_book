@@ -12,41 +12,43 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Text('Profile', style: theme.textTheme.headlineMedium),
-            const SizedBox(
-              height: 15,
-            ),
-            const CircleAvatar(
-              radius: 35,
-              backgroundImage: AssetImage('assets/images/pizza_w700.png'),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            ProfileListItem(
-                icon: Icons.bookmark_outline,
-                text: 'My Bookmarked Recipes',
-                onItemClicked: () {
-                  context.read<BottomNavCubit>().selectedTabChanged(1);
-                }),
-            AppThemeItem(),
-            ProfileListItem(
-                icon: Icons.logout,
-                text: 'Logout',
-                onItemClicked: () {
-                  context
-                      .read<AuthenticationBloc>()
-                      .add(const AppLogoutRequested());
-                })
-          ],
+    return Scaffold(
+      appBar:  AppBar(
+          elevation: 0,
+          title: Text('Profile', style: theme.textTheme.headlineSmall),
+          centerTitle: true,),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const CircleAvatar(
+                radius: 35,
+                backgroundImage: AssetImage('assets/images/pizza_w700.png'),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              ProfileListItem(
+                  icon: Icons.bookmark_outline,
+                  text: 'My Bookmarked Recipes',
+                  onItemClicked: () {
+                    context.read<BottomNavCubit>().selectedTabChanged(1);
+                  }),
+              AppThemeItem(),
+              ProfileListItem(
+                  icon: Icons.logout,
+                  text: 'Logout',
+                  onItemClicked: () {
+                    context
+                        .read<AuthenticationBloc>()
+                        .add(const AppLogoutRequested());
+                  })
+            ],
+          ),
         ),
       ),
     );

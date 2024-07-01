@@ -4,40 +4,40 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   // 1
   static TextTheme lightTextTheme = TextTheme(
-    bodyMedium: GoogleFonts.openSans(
+    bodyMedium: GoogleFonts.outfit(
       fontSize: 14.0,
       fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
-    headlineLarge: GoogleFonts.openSans(
+    headlineLarge: GoogleFonts.outfit(
       fontSize: 28.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
     ),
-    headlineMedium: GoogleFonts.openSans(
+    headlineMedium: GoogleFonts.outfit(
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
-    headlineSmall: GoogleFonts.openSans(
+    headlineSmall: GoogleFonts.outfit(
       fontSize: 16.0,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.bold,
       color: Colors.black,),
   );
 
   // 2
   static TextTheme darkTextTheme = TextTheme(
-    bodySmall: GoogleFonts.openSans(
+    bodySmall: GoogleFonts.outfit(
       fontSize: 14.0,
       fontWeight: FontWeight.w700,
       color: Colors.white,
     ),
-    bodyLarge: GoogleFonts.openSans(
+    bodyLarge: GoogleFonts.outfit(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
-    bodyMedium: GoogleFonts.openSans(
+    bodyMedium: GoogleFonts.outfit(
       fontSize: 21.0,
       fontWeight: FontWeight.w700,
       color: Colors.white,

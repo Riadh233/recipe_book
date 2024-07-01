@@ -6,6 +6,7 @@ import '../../data/remote/recipe_query_model.dart';
 class Recipe {
   String? label;
   RecipeImage? image;
+  bool isBookmarked;
   String? url;
   List<String> cuisineType = [];
   List<String> dietLabels = [];
@@ -18,53 +19,58 @@ class Recipe {
   double? totalWeight;
   double? totalTime;
 
-  Recipe(
-      {required this.label,
-      required this.image,
-      required this.url,
-      required this.ingredients,
-      required this.calories,
-      required this.totalWeight,
-      required this.totalTime,
-      required this.dietLabels,
-      required this.mealType,
-      required this.dishType,
-      required this.ingredientLines,
-      required this.totalNutrients,
-      required this.cuisineType});
+  Recipe({
+    required this.label,
+    required this.image,
+    required this.url,
+    required this.ingredients,
+    required this.calories,
+    required this.totalWeight,
+    required this.totalTime,
+    required this.dietLabels,
+    required this.mealType,
+    required this.dishType,
+    required this.ingredientLines,
+    required this.totalNutrients,
+    required this.cuisineType,
+    this.isBookmarked = false,
+  });
 
   factory Recipe.fromRecipeDto(RecipeDto recipeDto) {
     return Recipe(
-        label: recipeDto.label,
-        image: recipeDto.image,
-        url: recipeDto.url,
-        ingredients: recipeDto.ingredients ?? [],
-        calories: recipeDto.calories,
-        totalWeight: recipeDto.totalWeight,
-        cuisineType: recipeDto.cuisineType ?? [],
-        totalTime: recipeDto.totalTime,
-        dietLabels: recipeDto.dietLabels ?? [],
-        dishType: recipeDto.dishType ?? [],
-        mealType: recipeDto.mealType ?? [],
-        totalNutrients: recipeDto.getNutrients(),
-        ingredientLines: recipeDto.ingredientLines ?? []);
+      label: recipeDto.label,
+      image: recipeDto.image,
+      url: recipeDto.url,
+      ingredients: recipeDto.ingredients ?? [],
+      calories: recipeDto.calories,
+      totalWeight: recipeDto.totalWeight,
+      cuisineType: recipeDto.cuisineType ?? [],
+      totalTime: recipeDto.totalTime,
+      dietLabels: recipeDto.dietLabels ?? [],
+      dishType: recipeDto.dishType ?? [],
+      mealType: recipeDto.mealType ?? [],
+      totalNutrients: recipeDto.getNutrients(),
+      ingredientLines: recipeDto.ingredientLines ?? [],
+    );
   }
 
   factory Recipe.fromFirestoreRecipe(FirestoreRecipe recipeEntity) {
     return Recipe(
-        label: recipeEntity.label,
-        image: recipeEntity.image,
-        url: recipeEntity.url,
-        ingredients: recipeEntity.ingredients,
-        calories: recipeEntity.calories,
-        totalWeight: recipeEntity.totalWeight,
-        cuisineType: recipeEntity.cuisineType,
-        totalTime: recipeEntity.totalTime,
-        dietLabels: recipeEntity.dietLabels,
-        dishType: recipeEntity.dishType,
-        mealType: recipeEntity.mealType,
-        totalNutrients: recipeEntity.totalNutrients,
-        ingredientLines: recipeEntity.ingredientLines);
+      label: recipeEntity.label,
+      image: recipeEntity.image,
+      url: recipeEntity.url,
+      ingredients: recipeEntity.ingredients,
+      calories: recipeEntity.calories,
+      totalWeight: recipeEntity.totalWeight,
+      cuisineType: recipeEntity.cuisineType,
+      totalTime: recipeEntity.totalTime,
+      dietLabels: recipeEntity.dietLabels,
+      dishType: recipeEntity.dishType,
+      mealType: recipeEntity.mealType,
+      totalNutrients: recipeEntity.totalNutrients,
+      ingredientLines: recipeEntity.ingredientLines,
+      isBookmarked: true,
+    );
   }
 
   String getCalories() {
