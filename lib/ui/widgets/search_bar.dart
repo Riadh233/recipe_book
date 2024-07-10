@@ -74,18 +74,18 @@ class RecipeSearchBar extends StatelessWidget {
               keyboardType: TextInputType.text,
             );
           },
-          suggestionsBuilder: (BuildContext context, controller) {
+          suggestionsBuilder: (BuildContext suggestionBuilderContext, controller) {
             return List<ListTile>.generate(
                 SUGGESTION_QUERIES.length,
                 (index) => ListTile(
                       title: Text(SUGGESTION_QUERIES[index]),
                       onTap: () {
-                        logger.log(Logger.level, SUGGESTION_QUERIES[index]);
-                        controller.closeView(SUGGESTION_QUERIES[index]);
                         context.read<RemoteRecipeBloc>().add(GetRecipesEvent(
                             filters:
-                                context.read<FilterCubit>().state.filtersMap,
+                            context.read<FilterCubit>().state.filtersMap,
                             query: SUGGESTION_QUERIES[index]));
+                        logger.log(Logger.level, SUGGESTION_QUERIES[index]);
+                        controller.closeView(SUGGESTION_QUERIES[index]);
                         focusNode.unfocus();
                       },
                     ));

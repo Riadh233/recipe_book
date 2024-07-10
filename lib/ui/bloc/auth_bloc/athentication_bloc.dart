@@ -11,22 +11,22 @@ import '../../../data/auth/user.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc({required this.authenticationRepository})
-      : super(const AuthenticationState.unknown()) {
+  AuthenticationBloc({required AuthenticationRepository authenticationRepository})
+      : _authenticationRepository = authenticationRepository, super(const AuthenticationState.unknown()) {
     on<AppStarted>(_onAppStarted);
     on<AppUserChanged>(_userChanged);
     on<AppLogoutRequested>(_logoutRequested);
-    _userSubscription = authenticationRepository.getUserStream().listen((user) {
+    _userSubscription = _authenticationRepository.getUserStream().listen((user) {
       add(AppUserChanged(user));
     });
   }
 
-  final AuthenticationRepository authenticationRepository;
+  final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<User> _userSubscription;
 
   void _onAppStarted(AppStarted event, Emitter<AuthenticationState> emit) async {
     try {
-      final user = await authenticationRepository.getCurrentUser();
+      final user = await _authenticationRepository.getCurrentUser();
       emit(user.isEmpty
           ? const AuthenticationState.unauthenticated()
           : AuthenticationState.authenticated(user));
@@ -44,7 +44,7 @@ class AuthenticationBloc
 
   void _logoutRequested(
       AppLogoutRequested event, Emitter<AuthenticationState> emit) {
-    unawaited(authenticationRepository.logOut());
+    unawaited(_authenticationRepository.logOut());
   }
   @override
   Future<void> close() {

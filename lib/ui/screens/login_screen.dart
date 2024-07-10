@@ -285,6 +285,7 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
       return ElevatedButton(
           onPressed: () {
+            FocusScope.of(context).unfocus();
             if (state.isValid) {
               context.read<LoginCubit>().signInWithCredentials();
             } else {

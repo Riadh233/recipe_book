@@ -21,7 +21,6 @@ class CloudStoreRepositoryImpl implements CloudStoreRepository {
     try {
       final currentUser = await _cache.getCurrentUser();
       if (currentUser == User.empty) return;
-      logger.log(Logger.level, currentUser.id);
       final collectionRef = _fireStoreInstance.collection('users');
       final userDoc = collectionRef.doc(currentUser.id);
       final recipesSubCollection = userDoc.collection('recipes');

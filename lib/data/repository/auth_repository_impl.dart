@@ -190,6 +190,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+
     } on firebase_auth.FirebaseAuthException catch (e) {
       logger.log(Logger.level, e.toString());
       logger.log(Logger.level, e.code);
@@ -221,7 +222,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       logger.log(Logger.level, e.code);
       throw LogInWithGoogleFailure(e.code);
     } on Exception catch (ex) {
-      logger.log(Logger.level, 'login failed:${ex.toString()}');
       throw const LogInWithGoogleFailure();
     }
   }
@@ -229,7 +229,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> signUp({required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+     await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure(e.code);

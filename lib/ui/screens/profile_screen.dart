@@ -30,7 +30,13 @@ class ProfileScreen extends StatelessWidget {
                 backgroundImage: AssetImage('assets/images/pizza_w700.png'),
               ),
               const SizedBox(
-                height: 25,
+                height: 10,
+              ),
+              Text(
+                context.read<AuthenticationBloc>().state.user.email ?? ''
+              ),
+              const SizedBox(
+                height: 15,
               ),
               ProfileListItem(
                   icon: Icons.bookmark_outline,

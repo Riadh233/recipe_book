@@ -16,6 +16,7 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void usernameChanged(String value) {
     final username = Username.dirty(value);
+
     emit(state.copyWith(
         username: username,
         isValid:

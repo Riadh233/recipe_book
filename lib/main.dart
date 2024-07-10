@@ -15,6 +15,7 @@ import 'package:recipe_app/ui/bloc/auth_bloc/athentication_bloc.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/athentication_state.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/authentication_event.dart';
 import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_cubit.dart';
+import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/bloc/my_bloc_observer.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
             create: (context) => getIt()),
         BlocProvider<AuthenticationBloc>(
             create: (context) => getIt()..add(const AppStarted())),
+        BlocProvider<FilterCubit>(
+            create: (context) => getIt()),
         BlocProvider<AppThemeBloc>(
             create: (context) => getIt()..add(const AppThemeStarted())),
         BlocProvider<FirestoreBloc>(

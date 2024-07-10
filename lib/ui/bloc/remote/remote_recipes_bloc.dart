@@ -20,9 +20,9 @@ class RemoteRecipeBloc extends Bloc<RemoteRecipeEvent, RemoteRecipeState> {
 
   void onGetRecipes(
       GetRecipesEvent event, Emitter<RemoteRecipeState> emit) async {
+    logger.log(Logger.level, '${event.query}................................................');
+    logger.log(Logger.level, '${state.query}................................................');
     if (state.status == RecipeStatus.initial || (state.status == RecipeStatus.failure && state.recipeList.isEmpty)) {
-      //initial fetch
-      //emit(state.copyWith(query:event.query,filters:event.filters,status: RecipeStatus.searching));
       final dataState = await _getRecipes(params: {'query': event.query});
       if (dataState is DataSuccess) {
         var recipeList = dataState.data ?? [];
