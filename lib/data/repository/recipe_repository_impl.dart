@@ -14,8 +14,8 @@ class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeApiService recipeService;
   final DatabaseService databaseService;
 
-  static const appId = 'none';
-  static const appKey = 'none';
+  static const appId = 'APP_ID';
+  static const appKey = 'APP_KEY';
 
   RecipeRepositoryImpl(
       {required this.recipeService, required this.databaseService});
