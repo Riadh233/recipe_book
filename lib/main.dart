@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:logger/logger.dart';
 import 'package:recipe_app/data/auth/user.dart';
 import 'package:recipe_app/firebase_options.dart';
 import 'package:recipe_app/ui/app_theme.dart';
@@ -18,6 +19,7 @@ import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/bloc/my_bloc_observer.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
+import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/app_router.dart';
 import 'di/app_service.dart';
 
@@ -57,9 +59,11 @@ class MyApp extends StatelessWidget {
             themeState.isDarkTheme ? AppTheme.dark() : AppTheme.light();
         final router = AppRouter.router(
             authState.status == AuthenticationStatus.authenticated);
+        logger.log(Logger.level, 'auth state:${authState.status == AuthenticationStatus.authenticated}');
         return MaterialApp.router(
           title: 'Flutter Demo',
           theme: theme,
+          debugShowCheckedModeBanner: false,
           routerDelegate: router.routerDelegate,
           routeInformationParser: router.routeInformationParser,
           routeInformationProvider: router.routeInformationProvider,

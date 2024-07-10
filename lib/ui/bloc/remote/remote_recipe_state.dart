@@ -26,12 +26,14 @@ class RemoteRecipeState extends Equatable {
   });
 
   RemoteRecipeState copyWith(
-      {RecipeStatus? status, List<Recipe>? recipeList, bool? hasReachedMax,String? nextPage,DioException? error}){
+      {String? query,RecipeStatus? status, List<Recipe>? recipeList, bool? hasReachedMax,Map<String,String>? filters,String? nextPage,DioException? error}){
     return RemoteRecipeState(
+      query: query ?? this.query,
       status: status ?? this.status,
       recipeList: recipeList ?? this.recipeList,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       nextPage: nextPage ?? this.nextPage,
+      filters: filters ?? this.filters,
       error: error ?? this.error
     );
   }

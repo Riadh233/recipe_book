@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_cubit.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_state.dart';
@@ -86,6 +87,7 @@ class BookmarkedRecipeItem extends StatelessWidget {
       child: GestureDetector(
         onTap: (){
           context.pushNamed(AppRoutes.Details,extra: recipe);
+          context.read<BookmarkCubit>().isRecipeBookmarked(recipe);
         },
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -98,7 +100,7 @@ class BookmarkedRecipeItem extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: CachedNetworkImage(
-                    imageUrl: recipe.image?.SMALL.url ?? '',
+                    imageUrl: recipe.image?.THUMBNAIL.url ?? '',
                     fit: BoxFit.fill,
                     height: 80,
                     width: 80,

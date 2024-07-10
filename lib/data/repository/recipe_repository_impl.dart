@@ -41,7 +41,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
               cuisineType: cuisineType,
               diet: diet,
               calories: calories,
-              totalTime: totalTime));
+              totalTime: totalTime)).timeout(const Duration(seconds: 20));
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final hits = httpResponse.data.hits;
         return DataSuccess(
@@ -50,7 +50,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
                 .toList(),
             httpResponse.data.links?.next?.nextPage);
       } else {
-        logger.log(Logger.level, "fetch failed");
         return DataFailed(DioException(
             requestOptions: httpResponse.response.requestOptions,
             response: httpResponse.response,

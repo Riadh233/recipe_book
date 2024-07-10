@@ -33,6 +33,7 @@ class _LoginForm extends StatelessWidget {
   const _LoginForm();
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocListener<LoginCubit, LoginState>(
       listenWhen: (prevState, currState) {
         return prevState.status != currState.status;
@@ -141,9 +142,9 @@ class _LoginForm extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                 Text(
                   "Don't have an account? ",
-                  style: TextStyle(color: Colors.black87, fontSize: 12),
+                  style: TextStyle(color: theme.colorScheme.onBackground, fontSize: 12),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -208,6 +209,7 @@ class _EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<LoginCubit, LoginState>(
         buildWhen: (prevState, currState) {
       return prevState.email != currState.email;
@@ -228,8 +230,7 @@ class _EmailInput extends StatelessWidget {
             labelText: null,
             errorText:
                 state.email.displayError != null ? 'invalid email' : null),
-        style:
-            const TextStyle(fontSize: 15.0, height: 0.9, color: Colors.black),
+        style: TextStyle(fontSize: 15.0, height: 0.9, color: theme.colorScheme.onBackground),
       );
     });
   }
@@ -240,6 +241,7 @@ class _PasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<LoginCubit, LoginState>(
         buildWhen: (prevState, currState) {
       return prevState.password != currState.password ||
@@ -269,8 +271,7 @@ class _PasswordInput extends StatelessWidget {
             errorText: (state.password.displayError) != null
                 ? 'invalid password'
                 : null),
-        style:
-            const TextStyle(fontSize: 15.0, height: 0.9, color: Colors.black),
+        style: TextStyle(fontSize: 15.0, height: 0.9, color: theme.colorScheme.onBackground),
       );
     });
   }

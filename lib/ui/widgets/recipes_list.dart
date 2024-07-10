@@ -61,7 +61,7 @@ class _RecipeListState extends State<RecipesList> {
           padding: const EdgeInsets.all(8),
           itemBuilder: (_, index) {
             return index >= state.recipeList.length
-                ? const BottomLoader()
+                ? const Center(child: BottomLoader())
                 : RecipeItem(
                     recipe: state.recipeList[index],
                   );
@@ -81,8 +81,17 @@ class _RecipeListState extends State<RecipesList> {
         );
       } else {
         return Center(
-            child: Text(
-                state.error != null ? state.error!.message! : "fetch failed"));
+          child: Column(
+            children: [
+              IconButton(onPressed: (){
+                logger.log(Logger.level, '............${state.status}..................');
+                context.read<RemoteRecipeBloc>().add(GetRecipesEvent(filters: state.filters, query: state.query));
+              }, icon: const  Icon(Icons.refresh)),
+              const SizedBox(height: 4,),
+              const Text('could not load data, check out your internet connection')
+            ],
+          ),
+        );
       }
     });
   }

@@ -12,9 +12,9 @@ class DatabaseService{
     final box = await _box;
     box.put(user.id,user);
   }
-  void deleteUser(String id) async {
+  void deleteUser() async {
     final box = await _box;
-    box.delete(id);
+    box.clear();
   }
 
   Future<User> getCurrentUser() async{

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 import 'package:recipe_app/data/auth/user.dart';
 import 'package:recipe_app/data/firestore/firestore_recipe.dart';
 import 'package:recipe_app/domain/model/recipe.dart';
 import 'package:recipe_app/domain/repository/cloud_store_repository.dart';
+import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import '../local/database_service.dart';
 
 class CloudStoreRepositoryImpl implements CloudStoreRepository {
@@ -19,6 +21,7 @@ class CloudStoreRepositoryImpl implements CloudStoreRepository {
     try {
       final currentUser = await _cache.getCurrentUser();
       if (currentUser == User.empty) return;
+      logger.log(Logger.level, currentUser.id);
       final collectionRef = _fireStoreInstance.collection('users');
       final userDoc = collectionRef.doc(currentUser.id);
       final recipesSubCollection = userDoc.collection('recipes');

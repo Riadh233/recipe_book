@@ -80,6 +80,7 @@ class RecipeSearchBar extends StatelessWidget {
                 (index) => ListTile(
                       title: Text(SUGGESTION_QUERIES[index]),
                       onTap: () {
+                        logger.log(Logger.level, SUGGESTION_QUERIES[index]);
                         controller.closeView(SUGGESTION_QUERIES[index]);
                         context.read<RemoteRecipeBloc>().add(GetRecipesEvent(
                             filters:
@@ -182,7 +183,6 @@ class RecipeSearchBar extends StatelessWidget {
     );
 
     if (result == null) {
-      // Handle the dismissal (e.g., update UI, perform actions)
       logger.log(Logger.level, 'bottom sheet dismissed');
     }
   }

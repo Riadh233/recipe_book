@@ -160,6 +160,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Stream<User> getUserStream() {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      if(firebaseUser == null) {
+        _cache.deleteUser();
+      }
       _cache.saveUser(user);
       return user;
     });
@@ -215,8 +218,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       }
       await _firebaseAuth.signInWithCredential(credential);
     } on firebase_auth.FirebaseAuthException catch (e) {
+      logger.log(Logger.level, e.code);
       throw LogInWithGoogleFailure(e.code);
-    } catch (_) {
+    } on Exception catch (ex) {
+      logger.log(Logger.level, 'login failed:${ex.toString()}');
       throw const LogInWithGoogleFailure();
     }
   }
