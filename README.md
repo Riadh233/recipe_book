@@ -14,7 +14,7 @@ This App is designed following a modular and scalable architecture, leveraging k
   <img src="https://github.com/Riadh233/recipe_app/assets/78601101/492f7f48-ef61-4ad6-834b-3d19ffabd10e" height="400">
   <div>
    
- ## Features
+ # Features
  - User authantication (Firebase)
  - Firebase Cloud Storage
  - Search across +10000 diffrent recipes across the world
@@ -23,7 +23,19 @@ This App is designed following a modular and scalable architecture, leveraging k
  - Share the recipe
  - Dark Mode
 
-## Architecture 
-This app uses the Clean Architecture with BLOC, separating the app into Data, Domain, and UI layers, resulting in testable, maintainable, and flexible code. It leverages the power of FLUTTER libraries like Retrofit and Dio for network calls, GetIt for dependency injection, i also used Firebase authentication and cloud firestore services.
+# Architecture 
+This app uses the Clean Architecture with [Bloc Pattern](https://bloclibrary.dev/architecture/), separating the app into Data, Domain, and UI layers, resulting in testable, maintainable, and flexible code.
+
+# Tools and Libraries
+- [Bloc](https://bloclibrary.dev/)
+- [Firebase Authentication](https://firebase.google.com/docs/auth)
+- [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore)
+- [GoRouter](https://pub.dev/packages/go_router)
+- [GetIt](https://pub.dev/packages/get_it)
+- [Retrofit](https://pub.dev/packages/retrofit)
+- [Dio](https://pub.dev/packages/dio)
+- [Hive](https://docs.hivedb.dev/#/)
+- [Cached Network Image](https://pub.dev/packages/cached_network_image)
+
 
   
