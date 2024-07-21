@@ -31,6 +31,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
     required String totalTime,
   }) async {
     try {
+      logger.log(Logger.level,'${query} this is query');
       var httpResponse = await recipeService.getRecipes(
           appKey: appKey,
           appId: appId,

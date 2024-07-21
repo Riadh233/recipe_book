@@ -4,7 +4,6 @@ import 'package:recipe_app/data/auth/user.dart';
 import 'package:recipe_app/data/firestore/firestore_recipe.dart';
 import 'package:recipe_app/domain/model/recipe.dart';
 import 'package:recipe_app/domain/repository/cloud_store_repository.dart';
-import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import '../local/database_service.dart';
 
 class CloudStoreRepositoryImpl implements CloudStoreRepository {

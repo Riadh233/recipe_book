@@ -15,13 +15,16 @@ import 'package:recipe_app/ui/bloc/auth_bloc/athentication_bloc.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/athentication_state.dart';
 import 'package:recipe_app/ui/bloc/auth_bloc/authentication_event.dart';
 import 'package:recipe_app/ui/bloc/bookmark_cubit/bookmark_cubit.dart';
+import 'package:recipe_app/ui/bloc/bottom_nav_cubit/bottom_nav_cubit.dart';
 import 'package:recipe_app/ui/bloc/filter_cubit/recipe_filter_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_bloc.dart';
 import 'package:recipe_app/ui/bloc/firestore_bloc/firestore_event.dart';
 import 'package:recipe_app/ui/bloc/my_bloc_observer.dart';
+import 'package:recipe_app/ui/bloc/remote/remote_recipe_event.dart';
 import 'package:recipe_app/ui/bloc/remote/remote_recipes_bloc.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/app_router.dart';
+import 'package:recipe_app/utils/constants.dart';
 import 'di/app_service.dart';
 
 Future<void> main() async {
@@ -40,10 +43,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.log(Logger.level, 'main build called');
     return MultiBlocProvider(
       providers: [
         BlocProvider<RemoteRecipeBloc>(
-            create: (context) => getIt()),
+            create: (context) => getIt() ..add(const GetRecipesEvent(
+                query: '', filters: DEFAULT_FILTERS))),
         BlocProvider<AuthenticationBloc>(
             create: (context) => getIt()..add(const AppStarted())),
         BlocProvider<FilterCubit>(
@@ -53,25 +58,36 @@ class MyApp extends StatelessWidget {
         BlocProvider<FirestoreBloc>(
             create: (context) => getIt()..add(GetBookmarkedRecipesEvent())),
         BlocProvider<BookmarkCubit>(
+            create: (context) => getIt()),
+        BlocProvider<BottomNavCubit>(
             create: (context) => getIt())
       ],
-      child: Builder(builder: (context) {
-        final authState = context.watch<AuthenticationBloc>().state;
-        final themeState = context.watch<AppThemeBloc>().state;
-        final theme =
-            themeState.isDarkTheme ? AppTheme.dark() : AppTheme.light();
-        final router = AppRouter.router(
-            authState.status == AuthenticationStatus.authenticated);
-        logger.log(Logger.level, 'auth state:${authState.status == AuthenticationStatus.authenticated}');
-        return MaterialApp.router(
-          title: 'Flutter Demo',
-          theme: theme,
-          debugShowCheckedModeBanner: false,
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-        );
-      }),
+      child: const AppView()
     );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      final authState = context.watch<AuthenticationBloc>().state;
+      final themeState = context.watch<AppThemeBloc>().state;
+      final theme =
+      themeState.isDarkTheme ? AppTheme.dark() : AppTheme.light();
+      final router = AppRouter.router(
+          authState.status == AuthenticationStatus.authenticated);
+      logger.log(Logger.level, 'auth state:${authState.status == AuthenticationStatus.authenticated}');
+      return MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: theme,
+        debugShowCheckedModeBanner: false,
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
+        routeInformationProvider: router.routeInformationProvider,
+      );
+    });
   }
 }
