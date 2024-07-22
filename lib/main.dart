@@ -26,6 +26,8 @@ import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/app_router.dart';
 import 'package:recipe_app/utils/constants.dart';
 import 'di/app_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
   Bloc.observer = MyBlocObserver();
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:recipe_app/ui/screens/HomeScreen.dart';
 import 'package:recipe_app/utils/constants.dart';
 import 'package:recipe_app/utils/data_state.dart';
-import 'package:recipe_app/data/firestore/firestore_recipe.dart';
 import 'package:recipe_app/data/remote/recipe_api_service.dart';
 import '../../domain/model/recipe.dart';
 import '../../domain/repository/recipe_repository.dart';
@@ -14,8 +14,8 @@ class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeApiService recipeService;
   final DatabaseService databaseService;
 
-  static const appId = 'APP_ID';
-  static const appKey = 'APP_KEY';
+  static String appId = dotenv.env['APP_ID']!;
+  static String appKey = dotenv.env['APP_KEY']!;
 
   RecipeRepositoryImpl(
       {required this.recipeService, required this.databaseService});
@@ -31,7 +31,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
     required String totalTime,
   }) async {
     try {
-      logger.log(Logger.level,'${query} this is query');
+      logger.log(Logger.level, appKey);
       var httpResponse = await recipeService.getRecipes(
           appKey: appKey,
           appId: appId,
