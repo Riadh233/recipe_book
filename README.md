@@ -3,15 +3,13 @@ This App is designed following a modular and scalable architecture, leveraging k
 
  <div>
  <p align="center">
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/b79167b2-1967-40c8-831c-57846894df93"height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/99990294-79ed-4b6b-88e6-30be9e0557ac" height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/051e4c73-7075-481f-83cb-92211e3173f2" height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/5c82bbb3-1bc6-4343-9d27-be6a644991fe" height="400">
-   <img src="https://github.com/Riadh233/recipe_app/assets/78601101/87b9cc11-45fc-4715-9bf8-0271d18d7b94" height="400">
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/0dfa02a7-ce84-41dd-b27d-471e94304167" height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/7599421a-d63f-4144-b8d2-401146c3e616" height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/ed9b6b76-e3bb-4c18-9834-79484cb3c77a" height="400" >
-  <img src="https://github.com/Riadh233/recipe_app/assets/78601101/492f7f48-ef61-4ad6-834b-3d19ffabd10e" height="400">
+  <img src="https://github.com/user-attachments/assets/d87c69b9-779d-48b2-969e-12607fd76edd"height="400" >
+  <img src="https://github.com/user-attachments/assets/bfab0d74-3c5c-4e26-8ffb-b5c8eefa4995" height="400" >
+   <img src="https://github.com/user-attachments/assets/3cc1b61d-a402-4715-8f4b-f2772627afff" height="400" >
+  <img src="https://github.com/user-attachments/assets/0ac62161-df61-418a-be78-79961fe6c23e" height="400" >
+  <img src="https://github.com/user-attachments/assets/ec51c848-dc82-4274-b0dd-9009e9b80775" height="400" >
+  <img src="https://github.com/user-attachments/assets/b8173246-44a8-4678-89d3-b2158d953b18" height="400">
+   <img src="https://github.com/user-attachments/assets/734bb5c6-bef6-40dd-8d7e-bc9836b7a932" height="400">
   <div>
    
  # Features
